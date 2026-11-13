@@ -1,0 +1,3864 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Game Menata Menu Lauk di Ompreng — Karya: mbek ni</title>
+  <style>
+    /* ==========================================================================
+       1. DESIGN TOKENS & MOBILE-FIRST ANTI-SCROLL VIEWPORT LOCK
+       ========================================================================== */
+    :root {
+      --wood-dark: #3b200e;
+      --wood-mid: #6d411f;
+      --wood-light: #965f36;
+      --ink-dark: #0f172a;
+      --ink-body: #1e293b;
+      --ink-muted: #475569;
+      --gold: #f59e0b;
+      --gold-bright: #fbbf24;
+      --gold-light: #fef3c7;
+      --emerald: #10b981;
+      --emerald-dark: #047857;
+      --crimson: #ef4444;
+      --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      user-select: none;
+    }
+
+    html, body {
+      position: fixed;
+      inset: 0;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100dvh;
+      overflow: hidden;
+      overscroll-behavior: none;
+      font-family: var(--font-sans);
+      color: var(--ink-body);
+      background-color: var(--wood-dark);
+    }
+
+    body {
+      padding:
+        env(safe-area-inset-top, 0px)
+        env(safe-area-inset-right, 0px)
+        env(safe-area-inset-bottom, 0px)
+        env(safe-area-inset-left, 0px);
+      background-image:
+        radial-gradient(circle at 50% 45%, rgba(255, 237, 213, 0.25) 0%, rgba(28, 14, 5, 0.68) 100%),
+        repeating-linear-gradient(
+          90deg,
+          rgba(46, 22, 8, 0.24) 0px,
+          rgba(46, 22, 8, 0.24) 2px,
+          transparent 2px,
+          transparent 42px
+        ),
+        linear-gradient(180deg, #8b5a2b 0%, #6d411f 52%, #48270f 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    button {
+      font-family: inherit;
+      touch-action: manipulation;
+      cursor: pointer;
+    }
+
+    /* ==========================================================================
+       2. COMPACT & THUMB-FRIENDLY TOP HEADER (Z-INDEX: 50)
+       ========================================================================== */
+    .game-header {
+      position: relative;
+      z-index: 50;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      padding: 5px 12px;
+      background: linear-gradient(180deg, rgba(24, 14, 7, 0.97) 0%, rgba(44, 26, 14, 0.95) 100%);
+      border-bottom: 2px solid rgba(251, 191, 36, 0.45);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+      color: #ffffff;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      min-width: 0;
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #f8fafc 0%, #94a3b8 100%);
+      border: 2px solid #fbbf24;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .brand-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .brand-title {
+      font-size: 0.86rem;
+      font-weight: 900;
+      color: #fef3c7;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .creator-badge-header {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.7rem;
+      font-weight: 900;
+      color: #1e293b;
+      background: linear-gradient(135deg, #fde68a 0%, #f59e0b 100%);
+      padding: 2px 9px;
+      border-radius: 999px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .header-menu-btn {
+      min-height: 38px;
+      border: 1.5px solid #fcd34d;
+      background: linear-gradient(180deg, #fef3c7 0%, #fde68a 100%);
+      color: #78350f;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+    }
+
+    .header-menu-btn:active {
+      transform: scale(0.95);
+    }
+
+    .mode-switcher {
+      display: inline-flex;
+      background: rgba(15, 23, 42, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 999px;
+      padding: 2px;
+    }
+
+    .mode-btn {
+      min-height: 34px;
+      border: none;
+      background: transparent;
+      color: #cbd5e1;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 4px 9px;
+      border-radius: 999px;
+      white-space: nowrap;
+      transition: all 0.16s ease;
+    }
+
+    .mode-btn.active {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+    }
+
+    .coin-wallet {
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: linear-gradient(135deg, #451a03 0%, #78350f 100%);
+      border: 1.5px solid #fbbf24;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 0.8rem;
+      color: #fef08a;
+      white-space: nowrap;
+    }
+
+    .coin-wallet.shake {
+      animation: walletShake 0.4s ease;
+      border-color: #ef4444;
+    }
+
+    .coin-wallet.pulse {
+      animation: walletPulse 0.45s ease;
+    }
+
+    @keyframes walletShake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-3px); }
+    }
+
+    @keyframes walletPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.14); }
+      100% { transform: scale(1); }
+    }
+
+    .bailout-btn {
+      display: none;
+      min-height: 38px;
+      align-items: center;
+      gap: 4px;
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #1e293b;
+      border: 1.5px solid #fef3c7;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.7rem;
+      font-weight: 900;
+      white-space: nowrap;
+      animation: pulseGlow 1.5s infinite;
+    }
+
+    .bailout-btn.visible {
+      display: inline-flex;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+
+    .icon-btn {
+      min-width: 38px;
+      min-height: 38px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.14);
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 0 8px;
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .icon-btn:active {
+      transform: scale(0.94);
+    }
+
+    /* ==========================================================================
+       3. COMPACT STUDENT ORDER / NUTRITION STRIP
+       ========================================================================== */
+    .order-banner-wrap {
+      position: relative;
+      z-index: 20;
+      flex-shrink: 0;
+      width: 100%;
+      max-width: 1380px;
+      margin: 4px auto 0;
+      padding: 0 10px;
+    }
+
+    .order-card {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border: 2px solid #f59e0b;
+      border-radius: 12px;
+      padding: 4px 10px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .order-student-info {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-shrink: 0;
+    }
+
+    .order-mini-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #e0f2fe;
+      border: 1.5px solid #0284c7;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .order-label {
+      display: block;
+      font-size: 0.6rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #b45309;
+      line-height: 1.1;
+    }
+
+    .order-student-name {
+      font-size: 0.78rem;
+      font-weight: 900;
+      color: #1e293b;
+    }
+
+    .order-items-list {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+    }
+
+    .order-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      color: #334155;
+      white-space: nowrap;
+    }
+
+    .order-chip.matched {
+      background: #dcfce7;
+      border-color: #16a34a;
+      color: #14532d;
+    }
+
+    .order-chip .chip-check {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      color: transparent;
+      display: inline-grid;
+      place-items: center;
+      font-size: 0.6rem;
+      font-weight: 900;
+    }
+
+    .order-chip.matched .chip-check {
+      background: #16a34a;
+      color: #ffffff;
+    }
+
+    /* ==========================================================================
+       4. ADAPTIVE SERVING TABLE ARENA (PC & LANDSCAPE 3-COLUMN DEFAULT)
+       ========================================================================== */
+    .table-arena {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 4px 12px;
+      display: grid;
+      grid-template-areas:
+        "left top right"
+        "left center right"
+        "left bottom right";
+      grid-template-columns: minmax(180px, 230px) 1fr minmax(180px, 230px);
+      grid-template-rows: auto 1fr auto;
+      gap: 6px 12px;
+      align-items: center;
+    }
+
+    .portrait-dishes-dock {
+      display: contents;
+    }
+
+    .dish-row-top {
+      grid-area: top;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dish-row-bottom {
+      grid-area: bottom;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dish-col-left {
+      grid-area: left;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      align-content: center;
+    }
+
+    .dish-col-right {
+      grid-area: right;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      align-content: center;
+    }
+
+    /* Outer Serving Dish Card:
+       - Inactive state: touch-action: pan-x so horizontal tray scrolling works smoothly on mobile!
+       - Active state (.active-ready): touch-action: none so dragging launches immediately! */
+    .serving-dish {
+      position: relative;
+      z-index: 10;
+      background: radial-gradient(circle at 35% 30%, #ffffff 0%, #f1f5f9 75%, #cbd5e1 100%);
+      border: 2.5px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 4px 6px 5px;
+      min-width: 82px;
+      min-height: 68px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      touch-action: pan-x;
+      box-shadow:
+        0 5px 12px rgba(15, 23, 42, 0.32),
+        inset 0 2px 3px rgba(255, 255, 255, 0.9);
+      transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s ease, background 0.14s ease;
+    }
+
+    .serving-dish:hover {
+      transform: translateY(-2px);
+      border-color: #94a3b8;
+    }
+
+    .serving-dish.ordered-highlight {
+      border-color: #38bdf8;
+      background: radial-gradient(circle at 35% 30%, #f0f9ff 0%, #e0f2fe 85%, #bae6fd 100%);
+    }
+
+    .serving-dish.active-ready {
+      border-color: #f59e0b;
+      background: radial-gradient(circle at 35% 30%, #fffbeb 0%, #fef08a 82%, #fde047 100%);
+      transform: scale(1.06);
+      cursor: grab;
+      touch-action: none;
+      z-index: 15;
+      box-shadow:
+        0 0 0 3px rgba(245, 158, 11, 0.65),
+        0 10px 20px rgba(15, 23, 42, 0.42);
+      animation: readyPulse 1.2s infinite ease-in-out;
+    }
+
+    .serving-dish.active-ready:active {
+      cursor: grabbing;
+    }
+
+    @keyframes readyPulse {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.65), 0 8px 16px rgba(15, 23, 42, 0.38); }
+      50% { box-shadow: 0 0 0 6px rgba(251, 191, 36, 0.35), 0 10px 20px rgba(15, 23, 42, 0.45); }
+    }
+
+    .ready-pill-badge {
+      position: absolute;
+      top: -9px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #ffffff;
+      font-size: 0.58rem;
+      font-weight: 900;
+      padding: 1px 7px;
+      border-radius: 999px;
+      white-space: nowrap;
+      border: 1px solid #fffbeb;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      pointer-events: none !important;
+    }
+
+    .dish-plate-inner {
+      width: 46px;
+      height: 36px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 35%, #f8fafc 0%, #e2e8f0 85%, #cbd5e1 100%);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      box-shadow: inset 0 2px 4px rgba(15, 23, 42, 0.12);
+      display: grid;
+      place-items: center;
+      pointer-events: none !important;
+    }
+
+    .dish-plate-inner svg {
+      width: 40px;
+      height: 32px;
+      overflow: visible;
+      filter: drop-shadow(0 2px 2px rgba(15, 23, 42, 0.22));
+      pointer-events: none !important;
+    }
+
+    .dish-name {
+      font-size: 0.66rem;
+      font-weight: 800;
+      color: #1e293b;
+      text-align: center;
+      line-height: 1.1;
+      margin-top: 2px;
+      pointer-events: none !important;
+    }
+
+    .dish-price-tag {
+      margin-top: 2px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      color: #92400e;
+      font-size: 0.58rem;
+      font-weight: 800;
+      pointer-events: none !important;
+    }
+
+    /* ==========================================================================
+       5. CENTER STAGE: LARGE 5-COMPARTMENT STAINLESS STEEL OMPRENG
+       ========================================================================== */
+    .center-stage {
+      grid-area: center;
+      min-height: 0;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .ompreng-workspace {
+      width: 100%;
+      max-width: 550px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .ompreng-tray {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 530px;
+      aspect-ratio: 600 / 390;
+      max-height: clamp(220px, 44dvh, 350px);
+      border-radius: 26px;
+      padding: 11px;
+      background:
+        linear-gradient(135deg,
+          #f8fafc 0%,
+          #cbd5e1 18%,
+          #f1f5f9 36%,
+          #94a3b8 54%,
+          #e2e8f0 74%,
+          #64748b 100%);
+      box-shadow:
+        0 16px 32px rgba(15, 23, 42, 0.54),
+        0 4px 0 #475569,
+        inset 0 2px 3px rgba(255, 255, 255, 0.95),
+        inset 0 -3px 6px rgba(30, 41, 59, 0.45);
+      border: 3px solid #e2e8f0;
+      overflow: hidden;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .ompreng-tray.drag-over {
+      box-shadow:
+        0 0 0 4px #fbbf24,
+        0 18px 36px rgba(15, 23, 42, 0.6),
+        inset 0 2px 3px rgba(255, 255, 255, 0.95);
+    }
+
+    /* 5-COMPARTMENT STAINLESS STEEL GRID:
+       - Top Row: 3 Square Compartments (Sambal, Sayur, Buah)
+       - Bottom-Left: 1 Round Circular Compartment (Nasi)
+       - Bottom-Right: 1 Long Horizontal Rectangular Compartment (Lauk & Susu) */
+    .ompreng-inner-rim {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 18px;
+      padding: 8px;
+      background: linear-gradient(160deg, #94a3b8 0%, #cbd5e1 45%, #64748b 100%);
+      box-shadow: inset 0 3px 8px rgba(15, 23, 42, 0.45);
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: 0.88fr 1.12fr;
+      gap: 8px;
+    }
+
+    .compartment {
+      position: relative;
+      border-radius: 13px;
+      background: radial-gradient(ellipse at 35% 30%, #f1f5f9 0%, #cbd5e1 62%, #94a3b8 100%);
+      border: 2px solid rgba(255, 255, 255, 0.75);
+      box-shadow:
+        inset 0 5px 11px rgba(15, 23, 42, 0.34),
+        inset 0 -2px 4px rgba(255, 255, 255, 0.65),
+        0 1px 2px rgba(255, 255, 255, 0.5);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 4px;
+      overflow: hidden;
+      transition: background 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .compartment.highlight {
+      border-color: #f59e0b;
+      background: radial-gradient(ellipse at 35% 30%, #fefce8 0%, #fde047 68%, #cbd5e1 100%);
+      box-shadow:
+        inset 0 0 0 2px #f59e0b,
+        inset 0 4px 10px rgba(180, 83, 9, 0.25);
+    }
+
+    .comp-sambal { grid-column: 1 / 3; grid-row: 1 / 2; }
+    .comp-sayur  { grid-column: 3 / 5; grid-row: 1 / 2; }
+    .comp-buah   { grid-column: 5 / 7; grid-row: 1 / 2; }
+
+    .comp-nasi-slot {
+      grid-column: 1 / 3;
+      grid-row: 2 / 3;
+      display: grid;
+      place-items: center;
+      position: relative;
+    }
+
+    .comp-nasi-round {
+      height: 96%;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #f8fafc 0%, #cbd5e1 62%, #94a3b8 100%);
+      border: 2.5px solid rgba(255, 255, 255, 0.85);
+      box-shadow:
+        inset 0 6px 13px rgba(15, 23, 42, 0.38),
+        inset 0 -2px 5px rgba(255, 255, 255, 0.72),
+        0 2px 4px rgba(15, 23, 42, 0.25);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 8px;
+      transition: background 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .comp-nasi-round.highlight {
+      border-color: #f59e0b;
+      background: radial-gradient(circle at 35% 30%, #fefce8 0%, #fde047 68%, #cbd5e1 100%);
+      box-shadow:
+        inset 0 0 0 2px #f59e0b,
+        inset 0 4px 10px rgba(180, 83, 9, 0.25);
+    }
+
+    .comp-lauk {
+      grid-column: 3 / 7;
+      grid-row: 2 / 3;
+    }
+
+    .comp-hint {
+      font-size: 0.62rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: rgba(51, 65, 85, 0.54);
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+      pointer-events: none !important;
+      text-align: center;
+      padding: 1px 6px;
+      border-radius: 999px;
+      transition: all 0.16s ease;
+    }
+
+    .compartment.highlight .comp-hint,
+    .comp-nasi-round.highlight .comp-hint {
+      background: #92400e;
+      color: #fef3c7;
+      text-shadow: none;
+    }
+
+    /* Placed Food Items Layer (Directly Draggable Immediately on Touch/Mouse!) */
+    .plated-items-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    .plated-item {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      cursor: grab;
+      pointer-events: auto;
+      touch-action: none;
+      display: grid;
+      place-items: center;
+    }
+
+    .plated-item:active {
+      cursor: grabbing;
+    }
+
+    .plated-item.selected {
+      filter: drop-shadow(0 0 7px rgba(245, 158, 11, 0.95));
+    }
+
+    .plated-item.selected::after {
+      content: "";
+      position: absolute;
+      inset: -4px;
+      border: 2.5px dashed #f59e0b;
+      border-radius: 50%;
+      animation: spinSlow 9s linear infinite;
+      pointer-events: none !important;
+    }
+
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .plated-item-inner {
+      display: grid;
+      place-items: center;
+      filter: drop-shadow(0 4px 5px rgba(15, 23, 42, 0.34));
+      pointer-events: none !important;
+    }
+
+    .plated-item.pop-in .plated-item-inner {
+      animation: itemDropPop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes itemDropPop {
+      0% { transform: scale(1.34); }
+      65% { transform: scale(0.92); }
+      100% { transform: scale(1); }
+    }
+
+    /* ==========================================================================
+       6. STAINLESS STEEL LID WITH "mbek ni" EMBOSSED ENGRAVING
+       ========================================================================== */
+    .ompreng-lid {
+      position: absolute;
+      inset: 0;
+      z-index: 30;
+      border-radius: 26px;
+      background:
+        linear-gradient(125deg,
+          rgba(255,255,255,0.58) 0%,
+          rgba(255,255,255,0) 28%,
+          rgba(255,255,255,0.44) 52%,
+          rgba(255,255,255,0) 76%),
+        linear-gradient(145deg,
+          #f8fafc 0%,
+          #cbd5e1 24%,
+          #e2e8f0 48%,
+          #94a3b8 75%,
+          #64748b 100%);
+      border: 3px solid #f1f5f9;
+      box-shadow:
+        0 14px 28px rgba(15, 23, 42, 0.45),
+        inset 0 3px 6px rgba(255, 255, 255, 0.95),
+        inset 0 -4px 8px rgba(30, 41, 59, 0.45);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transform: translateY(-108%);
+      opacity: 0;
+      pointer-events: none !important;
+      transition: transform 0.44s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.26s ease;
+    }
+
+    .ompreng-lid.closed {
+      transform: translateY(0%);
+      opacity: 1;
+      pointer-events: auto !important;
+    }
+
+    .lid-emboss-frame {
+      width: 78%;
+      height: 68%;
+      border-radius: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.72);
+      box-shadow:
+        inset 0 2px 5px rgba(15, 23, 42, 0.25),
+        0 2px 4px rgba(255, 255, 255, 0.65);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      pointer-events: none !important;
+    }
+
+    .lid-handle {
+      width: 72px;
+      height: 11px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #f8fafc 0%, #94a3b8 60%, #475569 100%);
+      border: 1.5px solid #e2e8f0;
+      box-shadow: 0 3px 5px rgba(15, 23, 42, 0.35);
+    }
+
+    .lid-engraving {
+      font-size: 1.2rem;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: lowercase;
+      color: rgba(71, 85, 105, 0.72);
+      text-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.9),
+        0 -1px 1px rgba(15, 23, 42, 0.35);
+      padding: 3px 15px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(100, 116, 139, 0.35);
+      background: linear-gradient(180deg, rgba(148, 163, 184, 0.18), rgba(255, 255, 255, 0.28));
+    }
+
+    .lid-sub-engraving {
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(71, 85, 105, 0.58);
+    }
+
+    /* ==========================================================================
+       7. THUMB-FRIENDLY ITEM TOOLS BAR & PRIMARY ACTION ROW
+       ========================================================================== */
+    .item-tools-bar {
+      position: relative;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      min-height: 44px;
+      padding: 4px 10px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(251, 191, 36, 0.35);
+    }
+
+    .tool-hint-text {
+      font-size: 0.72rem;
+      color: #f1f5f9;
+      font-weight: 600;
+      text-align: center;
+      line-height: 1.25;
+    }
+
+    .mini-tool-btn {
+      min-height: 44px;
+      border: none;
+      border-radius: 11px;
+      padding: 6px 12px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      background: #f8fafc;
+      color: #0f172a;
+      box-shadow: 0 2px 0 #94a3b8;
+    }
+
+    .mini-tool-btn:active {
+      transform: translateY(1px);
+    }
+
+    .mini-tool-btn.danger {
+      background: #fee2e2;
+      color: #991b1b;
+      box-shadow: 0 2px 0 #fca5a5;
+    }
+
+    .action-buttons-row {
+      position: relative;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-game {
+      min-height: 46px;
+      border: none;
+      border-radius: 13px;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      white-space: nowrap;
+      transition: transform 0.12s ease, opacity 0.2s ease;
+    }
+
+    .btn-game:active:not(:disabled) {
+      transform: translateY(2px);
+    }
+
+    .btn-game:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .btn-reset {
+      background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+      color: #334155;
+      border: 1.5px solid #cbd5e1;
+      box-shadow: 0 3px 0 #94a3b8;
+    }
+
+    .btn-lid {
+      background: linear-gradient(180deg, #e2e8f0 0%, #94a3b8 100%);
+      color: #0f172a;
+      border: 1.5px solid #f8fafc;
+      box-shadow: 0 3px 0 #475569;
+    }
+
+    .btn-serve {
+      background: linear-gradient(180deg, #34d399 0%, #059669 100%);
+      color: #ffffff;
+      border: 1.5px solid #a7f3d0;
+      box-shadow: 0 3px 0 #065f46, 0 6px 14px rgba(16, 185, 129, 0.35);
+    }
+
+    /* ==========================================================================
+       8. MODALS & OVERLAY HYGIENE
+       ========================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      overflow-y: auto;
+    }
+
+    .modal-backdrop.hidden {
+      display: none !important;
+      pointer-events: none !important;
+    }
+
+    .modal-card {
+      position: relative;
+      z-index: 101;
+      width: 100%;
+      max-width: 720px;
+      background: linear-gradient(180deg, #fffbeb 0%, #ffffff 100%);
+      border: 3px solid #f59e0b;
+      border-radius: 22px;
+      padding: 16px 18px;
+      box-shadow: 0 24px 54px rgba(0, 0, 0, 0.55);
+      text-align: center;
+      margin: auto;
+    }
+
+    .title-hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 14px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #fde68a 0%, #f59e0b 100%);
+      border: 2px solid #b45309;
+      color: #1e293b;
+      font-weight: 900;
+      font-size: 0.84rem;
+      margin-bottom: 6px;
+    }
+
+    .modal-main-title {
+      margin: 2px 0 6px;
+      font-size: clamp(1.22rem, 3vw, 1.75rem);
+      font-weight: 900;
+      color: #78350f;
+    }
+
+    .modal-subtitle {
+      margin: 0 auto 12px;
+      max-width: 560px;
+      font-size: 0.82rem;
+      color: #475569;
+      line-height: 1.4;
+    }
+
+    .mode-select-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+
+    @media (max-width: 480px) {
+      .mode-select-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+    }
+
+    .mode-choice-card {
+      border: 2.5px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+
+    .mode-choice-card.selected {
+      border-color: #10b981;
+      background: #ecfdf5;
+      box-shadow: 0 5px 14px rgba(16, 185, 129, 0.2);
+    }
+
+    .mode-choice-title {
+      font-weight: 800;
+      font-size: 0.88rem;
+      color: #0f172a;
+      margin-bottom: 3px;
+    }
+
+    .mode-choice-desc {
+      font-size: 0.74rem;
+      color: #475569;
+      line-height: 1.35;
+    }
+
+    .rules-strip {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .rule-pill {
+      background: #fef3c7;
+      border: 1px solid #fcd34d;
+      color: #92400e;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .btn-start-big {
+      min-height: 48px;
+      width: 100%;
+      padding: 12px 18px;
+      border-radius: 14px;
+      border: 2px solid #a7f3d0;
+      background: linear-gradient(180deg, #10b981 0%, #047857 100%);
+      color: #ffffff;
+      font-size: 0.96rem;
+      font-weight: 900;
+      box-shadow: 0 5px 0 #064e3b;
+      transition: transform 0.12s ease;
+    }
+
+    .btn-start-big:active:not(:disabled) {
+      transform: translateY(2px);
+    }
+
+    .btn-start-big:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ==========================================================================
+       9. PRE-PLATING MENU SELECTION MODAL
+       ========================================================================== */
+    .menu-select-modal-card {
+      max-width: 920px;
+      padding: 14px 16px;
+    }
+
+    .menu-select-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+      text-align: left;
+    }
+
+    .menu-order-hint-box {
+      background: #fef3c7;
+      border: 1.5px solid #f59e0b;
+      border-radius: 12px;
+      padding: 7px 12px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.76rem;
+      color: #78350f;
+      text-align: left;
+    }
+
+    .quick-select-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .quick-pill-btn {
+      min-height: 40px;
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      color: #1e293b;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 5px 11px;
+      border-radius: 999px;
+    }
+
+    .quick-pill-btn:active {
+      background: #fde68a;
+      border-color: #f59e0b;
+    }
+
+    .menu-catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 820px) {
+      .menu-catalog-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 440px) {
+      .menu-catalog-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .menu-pick-card {
+      position: relative;
+      min-height: 86px;
+      border: 2px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 7px 5px;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.14s ease;
+    }
+
+    .menu-pick-card.picked {
+      border-color: #10b981;
+      background: #ecfdf5;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.22);
+    }
+
+    .menu-pick-card.is-ordered-item::before {
+      content: "Pesanan";
+      position: absolute;
+      top: -7px;
+      left: 6px;
+      background: #0284c7;
+      color: #ffffff;
+      font-size: 0.56rem;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 999px;
+      pointer-events: none !important;
+    }
+
+    .pick-check-badge {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      color: transparent;
+      font-size: 0.68rem;
+      font-weight: 900;
+      display: grid;
+      place-items: center;
+      pointer-events: none !important;
+    }
+
+    .menu-pick-card.picked .pick-check-badge {
+      background: #10b981;
+      color: #ffffff;
+    }
+
+    .pick-svg-box {
+      width: 48px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      pointer-events: none !important;
+    }
+
+    .pick-item-name {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: #1e293b;
+      text-align: center;
+      line-height: 1.15;
+      margin-top: 3px;
+      pointer-events: none !important;
+    }
+
+    .pick-item-meta {
+      font-size: 0.58rem;
+      font-weight: 700;
+      color: #64748b;
+      margin-top: 2px;
+      pointer-events: none !important;
+    }
+
+    /* ==========================================================================
+       10. STUDENT DINING SIMULATION & FINAL EVALUATION CARD
+       ========================================================================== */
+    .dining-card {
+      max-width: 820px;
+      background: linear-gradient(180deg, #e0f2fe 0%, #fffbeb 48%, #ffffff 100%);
+      border: 3px solid #f59e0b;
+      padding: 14px 16px;
+    }
+
+    .dining-layout-wrap {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .dining-layout-wrap.with-eval {
+      grid-template-columns: 1fr 1.1fr;
+    }
+
+    @media (max-width: 680px) {
+      .dining-layout-wrap.with-eval {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .dining-stage-scene {
+      position: relative;
+      width: 100%;
+      border-radius: 16px;
+      background: linear-gradient(180deg, #bae6fd 0%, #e0f2fe 58%, #9c663c 58%, #6f4320 100%);
+      border: 2px solid #cbd5e1;
+      padding: 10px 10px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .student-character-box {
+      width: 142px;
+      height: 128px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      z-index: 2;
+      pointer-events: none !important;
+    }
+
+    .student-character-box.eating-bob {
+      animation: studentEatBob 0.45s ease-in-out infinite alternate;
+    }
+
+    @keyframes studentEatBob {
+      from { transform: translateY(0px) scale(1); }
+      to { transform: translateY(5px) scale(1.03); }
+    }
+
+    .dining-status-banner {
+      background: rgba(15, 23, 42, 0.88);
+      color: #fef3c7;
+      font-size: 0.76rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 6px;
+      z-index: 5;
+    }
+
+    .dining-ompreng-mini {
+      position: relative;
+      width: 268px;
+      height: 174px;
+      border-radius: 18px;
+      padding: 8px;
+      background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 30%, #94a3b8 65%, #64748b 100%);
+      border: 2px solid #f1f5f9;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.45);
+      z-index: 3;
+    }
+
+    .dining-ompreng-grid {
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      padding: 5px;
+      background: #94a3b8;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: 0.88fr 1.12fr;
+      gap: 5px;
+    }
+
+    .dining-comp {
+      border-radius: 8px;
+      background: radial-gradient(ellipse at 35% 30%, #f1f5f9 0%, #cbd5e1 75%, #94a3b8 100%);
+      box-shadow: inset 0 2px 5px rgba(15, 23, 42, 0.3);
+    }
+
+    .dining-comp-round {
+      height: 94%;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #f8fafc 0%, #cbd5e1 75%, #94a3b8 100%);
+      box-shadow: inset 0 3px 6px rgba(15, 23, 42, 0.35);
+      margin: auto;
+    }
+
+    .dining-lid-overlay {
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 45%, #94a3b8 100%);
+      border: 2px solid #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      z-index: 15;
+      pointer-events: none !important;
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+    }
+
+    .dining-lid-overlay.opened {
+      transform: translateX(115%) rotate(12deg);
+      opacity: 0;
+    }
+
+    .dining-food-item {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      transition: transform 0.25s ease, opacity 0.25s ease;
+      pointer-events: none !important;
+    }
+
+    .dining-food-item.bite-1 {
+      clip-path: polygon(0% 0%, 100% 0%, 100% 42%, 74% 52%, 82% 72%, 62% 100%, 0% 100%);
+      transform: translate(-50%, -50%) scale(0.92);
+    }
+
+    .dining-food-item.bite-2 {
+      clip-path: polygon(0% 0%, 56% 0%, 44% 34%, 58% 60%, 38% 100%, 0% 100%);
+      transform: translate(-50%, -50%) scale(0.76);
+    }
+
+    .dining-food-item.eaten {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.2);
+    }
+
+    .crumb-particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      pointer-events: none !important;
+      z-index: 25;
+      animation: crumbFly 0.55s ease-out forwards;
+    }
+
+    @keyframes crumbFly {
+      0% { opacity: 1; transform: translate(0, 0) scale(1); }
+      100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.3); }
+    }
+
+    .evaluation-panel {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+      animation: fadeSlideUp 0.38s ease;
+    }
+
+    .evaluation-panel.visible {
+      display: flex;
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .speech-bubble {
+      background: #ffffff;
+      border: 2px solid #0284c7;
+      border-radius: 15px;
+      padding: 10px 13px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: #0f172a;
+      line-height: 1.38;
+      box-shadow: 0 5px 12px rgba(2, 132, 199, 0.14);
+    }
+
+    .eval-score-card {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border: 2px solid #f59e0b;
+      border-radius: 16px;
+      padding: 11px 14px;
+    }
+
+    .eval-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-bottom: 1.5px dashed #fbbf24;
+      padding-bottom: 7px;
+      margin-bottom: 8px;
+    }
+
+    .stars-row {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 1.4rem;
+    }
+
+    .star-icon {
+      color: #cbd5e1;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s;
+    }
+
+    .star-icon.lit {
+      color: #f59e0b;
+      transform: scale(1.14);
+    }
+
+    .eval-creator-stamp {
+      font-size: 0.74rem;
+      font-weight: 900;
+      color: #78350f;
+      background: #fde68a;
+      border: 1.5px solid #d97706;
+      padding: 2px 10px;
+      border-radius: 999px;
+    }
+
+    .eval-breakdown-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.78rem;
+      color: #334155;
+    }
+
+    .eval-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .eval-row.total {
+      margin-top: 4px;
+      padding-top: 6px;
+      border-top: 1.5px solid #f59e0b;
+      font-size: 0.92rem;
+      font-weight: 900;
+      color: #047857;
+    }
+
+    /* ==========================================================================
+       11. PRECISION TOUCH DRAG GHOST, TARGET CROSSHAIR, TOASTS & FOOTER
+       ========================================================================== */
+    .drag-ghost {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 999;
+      pointer-events: none !important;
+      transform: translate(-50%, -50%) scale(1.18);
+      filter: drop-shadow(0 14px 18px rgba(15, 23, 42, 0.48));
+      display: none;
+    }
+
+    .drag-target-ring {
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2.5px solid #f59e0b;
+      background: rgba(254, 240, 138, 0.45);
+      box-shadow: 0 0 8px rgba(245, 158, 11, 0.8);
+    }
+
+    .toast-container {
+      position: fixed;
+      top: 56px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      pointer-events: none !important;
+      width: 92%;
+      max-width: 480px;
+    }
+
+    .toast-msg {
+      background: rgba(15, 23, 42, 0.94);
+      color: #ffffff;
+      border: 1.5px solid #fbbf24;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.38);
+      text-align: center;
+      pointer-events: none !important;
+    }
+
+    .game-footer {
+      position: relative;
+      z-index: 50;
+      flex-shrink: 0;
+      text-align: center;
+      padding: 3px 10px 4px;
+      font-size: 0.66rem;
+      font-weight: 700;
+      color: rgba(254, 243, 199, 0.9);
+      background: rgba(24, 14, 7, 0.65);
+    }
+
+    .game-footer span {
+      color: #fde047;
+      font-weight: 900;
+    }
+
+    /* ==========================================================================
+       12. MOBILE PORTRAIT (VERTICAL) & SHORT LANDSCAPE ADAPTIVE ERGONOMICS
+       ========================================================================== */
+    @media (orientation: portrait) {
+      .game-header {
+        padding: 5px 8px;
+        gap: 4px;
+      }
+      .brand-title {
+        display: none;
+      }
+      .creator-badge-header {
+        font-size: 0.72rem;
+        padding: 3px 9px;
+      }
+      .header-menu-btn {
+        padding: 4px 9px;
+        font-size: 0.7rem;
+      }
+      .mode-btn {
+        padding: 4px 7px;
+        font-size: 0.66rem;
+      }
+      .coin-wallet {
+        padding: 3px 8px;
+        font-size: 0.75rem;
+      }
+      #fullscreenToggleBtn {
+        display: none;
+      }
+      .order-banner-wrap {
+        padding: 0 8px;
+        margin-top: 4px;
+      }
+      .order-card {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 5px 10px;
+        gap: 4px;
+      }
+      .order-items-list {
+        justify-content: flex-start;
+        gap: 4px;
+      }
+      .order-chip {
+        font-size: 0.68rem;
+        padding: 2px 7px;
+      }
+      .table-arena {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 4px 8px 6px;
+        gap: 6px;
+        overflow: hidden;
+      }
+      .center-stage {
+        order: 1;
+        flex: 1 1 auto;
+        width: 100%;
+        min-height: 0;
+        justify-content: center;
+        gap: 6px;
+      }
+      .ompreng-workspace {
+        max-width: 100%;
+      }
+      .ompreng-tray {
+        max-width: 100%;
+        max-height: clamp(210px, 38dvh, 335px);
+        padding: 9px;
+        border-radius: 22px;
+      }
+      .item-tools-bar {
+        width: 100%;
+        padding: 4px 8px;
+        min-height: 44px;
+      }
+      .action-buttons-row {
+        width: 100%;
+        gap: 6px;
+      }
+      .action-buttons-row .btn-game {
+        flex: 1;
+        min-height: 46px;
+        padding: 8px 6px;
+        font-size: 0.74rem;
+      }
+      /* Thumb-Reachable Bottom Serving Dish Dock */
+      .portrait-dishes-dock {
+        order: 2;
+        flex-shrink: 0;
+        width: 100%;
+        background: rgba(24, 14, 7, 0.62);
+        border: 2px solid rgba(251, 191, 36, 0.45);
+        border-radius: 16px;
+        padding: 12px 8px 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        overflow-x: auto;
+        overflow-y: visible;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-x;
+      }
+      .portrait-dishes-dock .dish-row-top,
+      .portrait-dishes-dock .dish-col-left,
+      .portrait-dishes-dock .dish-col-right,
+      .portrait-dishes-dock .dish-row-bottom {
+        display: contents;
+      }
+      .portrait-dishes-dock .serving-dish {
+        flex: 0 0 auto;
+        min-width: 86px;
+        min-height: 82px;
+      }
+      .game-footer {
+        font-size: 0.62rem;
+        padding: 3px 8px;
+      }
+    }
+
+    /* Mobile Short Landscape (e.g., 360px - 460px height) */
+    @media (orientation: landscape) and (max-height: 500px) {
+      .game-header {
+        padding: 3px 8px;
+      }
+      .brand-title {
+        font-size: 0.76rem;
+      }
+      .order-banner-wrap {
+        margin-top: 2px;
+        padding: 0 8px;
+      }
+      .order-card {
+        padding: 2px 10px;
+      }
+      .order-mini-avatar {
+        width: 24px;
+        height: 24px;
+      }
+      .order-chip {
+        font-size: 0.64rem;
+        padding: 1px 6px;
+      }
+      .table-arena {
+        grid-template-columns: minmax(164px, 196px) 1fr minmax(164px, 196px);
+        gap: 3px 8px;
+        padding: 2px 8px;
+      }
+      .serving-dish {
+        min-width: 72px;
+        min-height: 50px;
+        padding: 2px 4px;
+        border-radius: 10px;
+      }
+      .dish-plate-inner {
+        width: 34px;
+        height: 26px;
+      }
+      .dish-plate-inner svg {
+        width: 30px;
+        height: 22px;
+      }
+      .dish-name {
+        font-size: 0.58rem;
+      }
+      .dish-price-tag {
+        font-size: 0.52rem;
+      }
+      .ompreng-tray {
+        max-height: 46dvh;
+        padding: 7px;
+        border-radius: 18px;
+      }
+      .item-tools-bar {
+        min-height: 36px;
+        padding: 2px 8px;
+      }
+      .mini-tool-btn {
+        min-height: 36px;
+        padding: 3px 8px;
+        font-size: 0.68rem;
+      }
+      .btn-game {
+        min-height: 40px;
+        padding: 4px 10px;
+        font-size: 0.72rem;
+      }
+      .game-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================
+       PERSISTENT TOP HEADER WITH CREATOR IDENTITY ("mbek ni")
+       ======================================================================== -->
+  <header class="game-header">
+    <div class="brand-group">
+      <div class="brand-icon" aria-hidden="true">
+        <svg viewBox="0 0 40 28" width="22" height="16">
+          <rect x="1" y="1" width="38" height="26" rx="4" fill="#e2e8f0" stroke="#475569" stroke-width="2"/>
+          <rect x="4" y="4" width="9" height="8" rx="1.5" fill="#94a3b8"/>
+          <rect x="15.5" y="4" width="9" height="8" rx="1.5" fill="#94a3b8"/>
+          <rect x="27" y="4" width="9" height="8" rx="1.5" fill="#94a3b8"/>
+          <circle cx="9.5" cy="19" r="5" fill="#94a3b8"/>
+          <rect x="17" y="14" width="19" height="10" rx="2" fill="#94a3b8"/>
+        </svg>
+      </div>
+      <div class="brand-title-wrap">
+        <span class="brand-title">Menata Menu Lauk di Ompreng</span>
+        <span class="creator-badge-header">✨ mbek ni</span>
+      </div>
+    </div>
+
+    <div class="header-controls">
+      <button type="button" class="header-menu-btn" id="btnOpenMenuSelector" title="Pilih menu sajian meja">
+        🍽️ Menu
+      </button>
+
+      <div class="mode-switcher" role="group" aria-label="Pilih Mode Permainan">
+        <button type="button" class="mode-btn active" id="headerModeOrder">
+          📋 Pesanan
+        </button>
+        <button type="button" class="mode-btn" id="headerModeFree">
+          🎨 Bebas
+        </button>
+      </div>
+
+      <button type="button" class="bailout-btn" id="bailoutBtn">
+        🆘 +30 Koin
+      </button>
+
+      <div class="coin-wallet" id="coinWallet" title="Saldo Koin Kantin">
+        <span>🪙</span>
+        <span id="coinCountText">100</span>
+      </div>
+
+      <button type="button" class="icon-btn" id="muteToggleBtn" title="Suara Nyala/Mati" aria-label="Suara Nyala atau Mati">
+        🔊
+      </button>
+
+      <button type="button" class="icon-btn" id="fullscreenToggleBtn" title="Layar Penuh" aria-label="Layar Penuh">
+        ⛶
+      </button>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       ORDER / NUTRITION TICKET BAR
+       ======================================================================== -->
+  <section class="order-banner-wrap" aria-live="polite">
+    <div class="order-card" id="orderCardBanner">
+      <div class="order-student-info">
+        <div class="order-mini-avatar" id="bannerStudentAvatar"></div>
+        <div>
+          <span class="order-label" id="bannerModeLabel">Pesanan Siswa</span>
+          <span class="order-student-name" id="bannerStudentName">Memuat siswa...</span>
+        </div>
+      </div>
+      <div class="order-items-list" id="orderChecklist"></div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       MAIN SERVING TABLE (5-COMPARTMENT STAINLESS STEEL OMPRENG & DISHES)
+       ======================================================================== -->
+  <main class="table-arena">
+    <!-- Center Stage: Large 5-Compartment Stainless Steel Ompreng -->
+    <section class="center-stage" aria-label="Area Ompreng 5 Sekat">
+      <div class="ompreng-workspace">
+        <div class="ompreng-tray" id="omprengTray">
+          <div class="ompreng-inner-rim" id="omprengInnerRim">
+            <!-- Top Row: 3 Square Compartments (Sambal, Sayur, Buah) -->
+            <div class="compartment comp-sambal" data-comp="sambal"><span class="comp-hint">Sambal</span></div>
+            <div class="compartment comp-sayur" data-comp="sayur"><span class="comp-hint">Sayur</span></div>
+            <div class="compartment comp-buah" data-comp="buah"><span class="comp-hint">Buah</span></div>
+
+            <!-- Bottom-Left: 1 Round Circular Compartment for Nasi -->
+            <div class="comp-nasi-slot">
+              <div class="comp-nasi-round" data-comp="nasi"><span class="comp-hint">Nasi</span></div>
+            </div>
+
+            <!-- Bottom-Right: 1 Long Horizontal Rectangular Compartment for Lauk & Susu -->
+            <div class="compartment comp-lauk" data-comp="lauk"><span class="comp-hint">Lauk &amp; Susu</span></div>
+          </div>
+
+          <!-- Placed Food Items Layer -->
+          <div class="plated-items-layer" id="platedItemsLayer"></div>
+
+          <!-- Stainless Steel Lid with Embossed "mbek ni" Engraving -->
+          <div class="ompreng-lid" id="omprengLid" aria-hidden="true">
+            <div class="lid-emboss-frame">
+              <div class="lid-handle"></div>
+              <div class="lid-engraving">mbek ni</div>
+              <div class="lid-sub-engraving">STAINLESS STEEL 304 • OMPRENG 5 SEKAT</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thumb-Friendly Item Manipulation Toolbar -->
+      <div class="item-tools-bar" id="itemToolsBar">
+        <span class="tool-hint-text">👆 1) Tap piring menu hingga menyala emas, lalu geser ke ompreng (atau tap sekat tujuan) • 2) Lauk di ompreng langsung bisa digeser!</span>
+      </div>
+
+      <!-- Primary Ompreng Controls -->
+      <div class="action-buttons-row">
+        <button type="button" class="btn-game btn-reset" id="resetTrayBtn">
+          🔄 Reset
+        </button>
+        <button type="button" class="btn-game btn-lid" id="toggleLidBtn">
+          🛡️ Tutup Ompreng
+        </button>
+        <button type="button" class="btn-game btn-serve" id="serveBtn" disabled>
+          🍱 Sajikan
+        </button>
+      </div>
+    </section>
+
+    <!-- Surrounding Serving Plates (Bottom Scroll Tray on Portrait HP, 4 Sides on Landscape/PC) -->
+    <div class="portrait-dishes-dock" id="portraitDishesDock">
+      <div class="dish-row-top" id="dishRowTop"></div>
+      <div class="dish-col-left" id="dishColLeft"></div>
+      <div class="dish-col-right" id="dishColRight"></div>
+      <div class="dish-row-bottom" id="dishRowBottom"></div>
+    </div>
+  </main>
+
+  <!-- Persistent Footer -->
+  <footer class="game-footer">
+    Game Menata Menu Lauk di Ompreng • Karya: <span>mbek ni</span> • Harga tiap menu: <span>5 Koin</span>
+  </footer>
+
+  <!-- ========================================================================
+       MODAL 1: TITLE SCREEN (LAYAR PEMBUKA)
+       ======================================================================== -->
+  <div class="modal-backdrop" id="startModal" role="dialog" aria-modal="true" aria-labelledby="startModalTitle">
+    <div class="modal-card">
+      <div class="title-hero-badge">⭐ Karya: mbek ni ⭐</div>
+      <h1 class="modal-main-title" id="startModalTitle">Game Menata Menu Lauk di Ompreng</h1>
+      <p class="modal-subtitle">
+        Tata nasi di sekat bulat bawah kiri, sambal-sayur-buah di 3 sekat kotak atas, serta lauk &amp; minuman susu di sekat panjang bawah kanan. Tutup ompreng stainless steel dan sajikan kepada siswa-siswi!
+      </p>
+
+      <div class="mode-select-grid">
+        <div class="mode-choice-card selected" id="startChoiceOrder" role="button" tabindex="0">
+          <div class="mode-choice-title">📋 Mode Pesanan Siswa</div>
+          <div class="mode-choice-desc">
+            Siswa memesan kombinasi menu tertentu (termasuk Susu Putih &amp; Susu Coklat). Pesanan tepat berhadiah <strong>+25 s/d +45 Koin</strong>!
+          </div>
+        </div>
+        <div class="mode-choice-card" id="startChoiceFree" role="button" tabindex="0">
+          <div class="mode-choice-title">🎨 Mode Kreasi Bebas</div>
+          <div class="mode-choice-desc">
+            Bebas berkreasi menata menu pilihanmu sendiri dan raih bonus koin berdasarkan kelengkapan gizi <strong>4 Sehat 5 Sempurna</strong>!
+          </div>
+        </div>
+      </div>
+
+      <div class="rules-strip">
+        <span class="rule-pill">🪙 Modal Awal: 100 Koin</span>
+        <span class="rule-pill">🍽️ 14 Menu (Semua 5 Koin)</span>
+        <span class="rule-pill">📱 Nyaman di HP &amp; PC</span>
+      </div>
+
+      <button type="button" class="btn-start-big" id="btnStartToMenu">
+        🍽️ Mulai &amp; Pilih Menu Meja ➡️
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 2: PRE-PLATING MENU SELECTION ("PILIH MENU SAJIAN MEJA")
+       ======================================================================== -->
+  <div class="modal-backdrop hidden" id="menuSelectModal" role="dialog" aria-modal="true" aria-labelledby="menuSelectTitle">
+    <div class="modal-card menu-select-modal-card">
+      <div class="menu-select-header">
+        <div>
+          <h2 id="menuSelectTitle" style="margin:0;font-size:1.1rem;font-weight:900;color:#78350f;">
+            🍽️ Pilih Menu Sajian Meja (14 Menu)
+          </h2>
+          <span style="font-size:0.74rem;color:#475569;">
+            Pilih menu yang ingin dihadirkan di meja saji • <strong>Karya: mbek ni</strong>
+          </span>
+        </div>
+        <div class="quick-select-btns">
+          <button type="button" class="quick-pill-btn" id="btnPickOrderMatch">
+            ✅ Sesuai Pesanan
+          </button>
+          <button type="button" class="quick-pill-btn" id="btnPickAll">
+            🍱 Semua (14)
+          </button>
+          <button type="button" class="quick-pill-btn" id="btnPickMin6">
+            🎯 6 Menu Praktis
+          </button>
+        </div>
+      </div>
+
+      <div class="menu-order-hint-box" id="menuSelectOrderHint"></div>
+
+      <div class="menu-catalog-grid" id="menuCatalogGrid"></div>
+
+      <button type="button" class="btn-start-big" id="confirmMenuBtn">
+        🚀 Mulai Menata Ompreng!
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 3: STUDENT DINING SIMULATION & FINAL EVALUATION CARD
+       ======================================================================== -->
+  <div class="modal-backdrop hidden" id="diningModal" role="dialog" aria-modal="true" aria-labelledby="diningStatusText">
+    <div class="modal-card dining-card">
+      <div class="dining-layout-wrap" id="diningLayoutWrap">
+        <div class="dining-stage-scene">
+          <div class="dining-status-banner" id="diningStatusText">Siswa menerima ompreng...</div>
+
+          <div class="student-character-box" id="studentCharacterBox"></div>
+
+          <div class="dining-ompreng-mini" id="diningOmprengMini">
+            <div class="dining-ompreng-grid">
+              <div class="dining-comp" style="grid-column:1/3;grid-row:1/2;"></div>
+              <div class="dining-comp" style="grid-column:3/5;grid-row:1/2;"></div>
+              <div class="dining-comp" style="grid-column:5/7;grid-row:1/2;"></div>
+              <div style="grid-column:1/3;grid-row:2/3;display:grid;place-items:center;">
+                <div class="dining-comp-round"></div>
+              </div>
+              <div class="dining-comp" style="grid-column:3/7;grid-row:2/3;"></div>
+            </div>
+            <div id="diningFoodLayer" style="position:absolute;inset:0;z-index:8;pointer-events:none;"></div>
+            <div class="dining-lid-overlay" id="diningLidOverlay">
+              <div class="lid-handle" style="width:46px;height:8px;"></div>
+              <div class="lid-engraving" style="font-size:0.82rem;padding:2px 10px;">mbek ni</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="evaluation-panel" id="evaluationPanel">
+          <div class="speech-bubble" id="studentReviewBubble">
+            "Wah, enak banget makanannya!"
+          </div>
+
+          <div class="eval-score-card">
+            <div class="eval-card-header">
+              <div class="stars-row" id="evalStarsRow">
+                <span class="star-icon">★</span>
+                <span class="star-icon">★</span>
+                <span class="star-icon">★</span>
+                <span class="star-icon">★</span>
+                <span class="star-icon">★</span>
+              </div>
+              <div class="eval-creator-stamp">Karya: mbek ni</div>
+            </div>
+
+            <div class="eval-breakdown-list" id="evalBreakdownList"></div>
+          </div>
+
+          <button type="button" class="btn-start-big" id="btnNextRound">
+            ➡️ Lanjut Pesanan Berikutnya
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Drag Ghost & Toast Notifications -->
+  <div class="drag-ghost" id="dragGhost"></div>
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ========================================================================
+       GAME SCRIPT: SOUND ENGINE, 14 VECTOR SVGs, STUDENT AVATARS & MOBILE UX
+       ======================================================================== -->
+  <script>
+    /**
+     * ========================================================================
+     * MODULE 1: WEB AUDIO API SYNTHESIZED SOUND ENGINE
+     * ========================================================================
+     */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+      }
+
+      ensureContext() {
+        if (this.muted) return null;
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) this.ctx = new AudioCtx();
+        }
+        if (this.ctx && this.ctx.state === "suspended") {
+          this.ctx.resume().catch(() => {});
+        }
+        return this.ctx;
+      }
+
+      playPop() {
+        const ctx = this.ensureContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(360, now);
+        osc.frequency.exponentialRampToValueAtTime(780, now + 0.085);
+        gain.gain.setValueAtTime(0.22, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.095);
+      }
+
+      playPlace() {
+        const ctx = this.ensureContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(250, now);
+        osc.frequency.exponentialRampToValueAtTime(115, now + 0.11);
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.13);
+      }
+
+      playLidClank(isClosing = true) {
+        const ctx = this.ensureContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const freqs = isClosing ? [1180, 1790, 2640] : [980, 1520, 2240];
+        freqs.forEach((f, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = idx === 0 ? "triangle" : "sine";
+          osc.frequency.setValueAtTime(f, now);
+          osc.frequency.exponentialRampToValueAtTime(f * 0.84, now + 0.15);
+          gain.gain.setValueAtTime(0.14 / (idx + 1), now);
+          gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.16);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.17);
+        });
+      }
+
+      playChew() {
+        const ctx = this.ensureContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const bufferSize = Math.floor(ctx.sampleRate * 0.075);
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.45));
+        }
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
+        const filter = ctx.createBiquadFilter();
+        filter.type = "bandpass";
+        filter.frequency.setValueAtTime(980 + Math.random() * 420, now);
+        filter.Q.setValueAtTime(1.8, now);
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.24, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+        noise.start(now);
+      }
+
+      playSip() {
+        const ctx = this.ensureContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(280, now);
+        osc.frequency.exponentialRampToValueAtTime(640, now + 0.16);
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.17);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.18);
+      }
+
+      playCoin() {
+        const ctx = this.ensureContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        [987.77, 1318.51].forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(freq, now + i * 0.07);
+          gain.gain.setValueAtTime(0.18, now + i * 0.07);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.07 + 0.24);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + i * 0.07);
+          osc.stop(now + i * 0.07 + 0.25);
+        });
+      }
+
+      playRefund() {
+        const ctx = this.ensureContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(620, now);
+        osc.frequency.exponentialRampToValueAtTime(420, now + 0.1);
+        gain.gain.setValueAtTime(0.14, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.12);
+      }
+
+      playStar(starIndex) {
+        const ctx = this.ensureContext();
+        if (!ctx) return;
+        const scale = [523.25, 587.33, 659.25, 783.99, 1046.5];
+        const freq = scale[Math.min(starIndex, scale.length - 1)];
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(freq, now);
+        gain.gain.setValueAtTime(0.22, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.32);
+      }
+    }
+
+    /**
+     * ========================================================================
+     * MODULE 2: 14 APPETIZING 2D VECTOR FOOD, FRUIT & MILK ILLUSTRATIONS
+     * ========================================================================
+     */
+    const FOOD_CATALOG = [
+      {
+        id: "nasi",
+        name: "Nasi putih",
+        category: "karbo",
+        catLabel: "Nasi",
+        defaultPos: { x: 20, y: 72 },
+        size: 76,
+        crumbColor: "#f8fafc",
+        svg: `
+          <svg viewBox="0 0 100 84" width="100%" height="100%">
+            <ellipse cx="50" cy="64" rx="40" ry="14" fill="#cbd5e1" opacity="0.55"/>
+            <path d="M12 58 C12 30, 30 16, 50 16 C70 16, 88 30, 88 58 C88 68, 70 73, 50 73 C30 73, 12 68, 12 58 Z" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+            <path d="M16 56 C24 64, 76 64, 84 56 C82 67, 68 71, 50 71 C32 71, 18 67, 16 56 Z" fill="#e2e8f0"/>
+            <g fill="#ffffff" stroke="#cbd5e1" stroke-width="0.9">
+              <ellipse cx="38" cy="30" rx="4.5" ry="2.2" transform="rotate(-18 38 30)"/>
+              <ellipse cx="52" cy="26" rx="4.8" ry="2.2" transform="rotate(12 52 26)"/>
+              <ellipse cx="64" cy="33" rx="4.5" ry="2.2" transform="rotate(28 64 33)"/>
+              <ellipse cx="30" cy="42" rx="4.6" ry="2.2" transform="rotate(-25 30 42)"/>
+              <ellipse cx="45" cy="39" rx="4.8" ry="2.3" transform="rotate(8 45 39)"/>
+              <ellipse cx="58" cy="43" rx="4.6" ry="2.2" transform="rotate(-14 58 43)"/>
+              <ellipse cx="71" cy="46" rx="4.4" ry="2.1" transform="rotate(22 71 46)"/>
+              <ellipse cx="26" cy="54" rx="4.5" ry="2.2" transform="rotate(-10 26 54)"/>
+              <ellipse cx="40" cy="52" rx="4.8" ry="2.2" transform="rotate(16 40 52)"/>
+              <ellipse cx="54" cy="54" rx="4.8" ry="2.2" transform="rotate(-8 54 54)"/>
+              <ellipse cx="68" cy="56" rx="4.5" ry="2.1" transform="rotate(18 68 56)"/>
+            </g>
+          </svg>`
+      },
+      {
+        id: "barendo",
+        name: "Telur barendo",
+        category: "protein",
+        catLabel: "Lauk",
+        defaultPos: { x: 56, y: 72 },
+        size: 72,
+        crumbColor: "#f59e0b",
+        svg: `
+          <svg viewBox="0 0 100 84" width="100%" height="100%">
+            <path d="M14 44 C10 34, 19 24, 28 22 C33 13, 47 11, 56 15 C67 11, 80 17, 83 27 C92 33, 92 47, 84 55 C82 66, 69 73, 57 70 C46 75, 31 72, 25 63 C15 61, 10 52, 14 44 Z"
+              fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
+            <path d="M22 43 C20 34, 28 25, 38 24 C46 19, 60 20, 68 27 C77 32, 79 45, 72 54 C66 63, 49 65, 37 61 C26 58, 21 50, 22 43 Z"
+              fill="#fbbf24"/>
+            <ellipse cx="50" cy="43" rx="18" ry="13" fill="#fde047" stroke="#f59e0b" stroke-width="1.5"/>
+            <g fill="#92400e" opacity="0.55">
+              <circle cx="22" cy="34" r="2.2"/><circle cx="32" cy="21" r="2.5"/>
+              <circle cx="66" cy="20" r="2.3"/><circle cx="79" cy="35" r="2.6"/>
+              <circle cx="76" cy="54" r="2.4"/><circle cx="60" cy="65" r="2.2"/>
+              <circle cx="34" cy="64" r="2.5"/><circle cx="19" cy="51" r="2.3"/>
+            </g>
+          </svg>`
+      },
+      {
+        id: "sambal",
+        name: "Sambal",
+        category: "pelengkap",
+        catLabel: "Sambal",
+        defaultPos: { x: 20, y: 26 },
+        size: 52,
+        crumbColor: "#ef4444",
+        svg: `
+          <svg viewBox="0 0 100 84" width="100%" height="100%">
+            <path d="M18 58 C18 36, 34 24, 50 24 C66 24, 82 36, 82 58 C82 67, 66 71, 50 71 C34 71, 18 67, 18 58 Z"
+              fill="#dc2626" stroke="#991b1b" stroke-width="2"/>
+            <path d="M26 52 C28 36, 40 29, 52 29 C63 29, 73 37, 74 51" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" opacity="0.75"/>
+            <g fill="#fef08a">
+              <ellipse cx="42" cy="42" rx="2.3" ry="1.4" transform="rotate(20 42 42)"/>
+              <ellipse cx="56" cy="40" rx="2.3" ry="1.4" transform="rotate(-15 56 40)"/>
+              <ellipse cx="35" cy="54" rx="2.2" ry="1.3" transform="rotate(-25 35 54)"/>
+              <ellipse cx="50" cy="53" rx="2.4" ry="1.4" transform="rotate(10 50 53)"/>
+              <ellipse cx="64" cy="55" rx="2.2" ry="1.3" transform="rotate(30 64 55)"/>
+            </g>
+            <circle cx="44" cy="33" r="2.5" fill="#ffffff" opacity="0.75"/>
+          </svg>`
+      },
+      {
+        id: "katsu",
+        name: "Ayam katsu",
+        category: "protein",
+        catLabel: "Lauk",
+        defaultPos: { x: 56, y: 72 },
+        size: 74,
+        crumbColor: "#d97706",
+        svg: `
+          <svg viewBox="0 0 100 84" width="100%" height="100%">
+            <g transform="rotate(-10 50 42)">
+              <rect x="14" y="24" width="16" height="40" rx="6" fill="#d97706" stroke="#92400e" stroke-width="1.8"/>
+              <rect x="16" y="46" width="12" height="15" rx="3" fill="#fef3c7"/>
+              <rect x="32" y="20" width="16" height="44" rx="6" fill="#ea580c" stroke="#9a3412" stroke-width="1.8"/>
+              <rect x="34" y="45" width="12" height="16" rx="3" fill="#fffbeb"/>
+              <rect x="50" y="21" width="16" height="44" rx="6" fill="#d97706" stroke="#92400e" stroke-width="1.8"/>
+              <rect x="52" y="46" width="12" height="16" rx="3" fill="#fef3c7"/>
+              <rect x="68" y="25" width="16" height="39" rx="6" fill="#b45309" stroke="#78350f" stroke-width="1.8"/>
+              <rect x="70" y="47" width="12" height="14" rx="3" fill="#fffbeb"/>
+              <g fill="#fde68a" opacity="0.85">
+                <circle cx="21" cy="31" r="1.5"/><circle cx="39" cy="28" r="1.6"/>
+                <circle cx="57" cy="29" r="1.5"/><circle cx="75" cy="32" r="1.4"/>
+              </g>
+            </g>
+          </svg>`
+      },
+      {
+        id: "bayam",
+        name: "Bayam krispi",
+        category: "sayur",
+        catLabel: "Sayur",
+        defaultPos: { x: 50, y: 26 },
+        size: 62,
+        crumbColor: "#22c55e",
+        svg: `
+          <svg viewBox="0 0 100 84" width="100%" height="100%">
+            <path d="M20 55 C12 40, 22 22, 38 22 C46 22, 49 36, 44 52 C38 62, 26 63, 20 55 Z" fill="#15803d" stroke="#facc15" stroke-width="2.4"/>
+            <path d="M35 26 L30 56" stroke="#86efac" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M48 56 C44 38, 56 18, 72 20 C82 22, 82 40, 72 54 C64 63, 52 64, 48 56 Z" fill="#16a34a" stroke="#fde047" stroke-width="2.4"/>
+            <path d="M68 24 L58 56" stroke="#bbf7d0" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M32 64 C28 50, 42 36, 56 38 C66 40, 66 56, 54 66 C44 72, 35 70, 32 64 Z" fill="#166534" stroke="#f59e0b" stroke-width="2.2"/>
+          </svg>`
+      },
+      {
+        id: "ayampop",
+        name: "Ayam pop",
+        category: "protein",
+        catLabel: "Lauk",
+        defaultPos: { x: 56, y: 72 },
+        size: 72,
+        crumbColor: "#fef3c7",
+        svg: `
+          <svg viewBox="0 0 100 84" width="100%" height="100%">
+            <g transform="rotate(-14 50 44)">
+              <rect x="64" y="37" width="22" height="11" rx="5" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.6"/>
+              <circle cx="85" cy="38" r="4.5" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+              <circle cx="85" cy="46" r="4.5" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+              <path d="M16 43 C16 26, 36 20, 54 26 C64 30, 70 36, 70 43 C70 50, 64 56, 54 59 C36 65, 16 59, 16 43 Z"
+                fill="#fef9c3" stroke="#eab308" stroke-width="1.8"/>
+              <path d="M22 38 C28 28, 46 27, 57 34" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+            </g>
+          </svg>`
+      },
+      {
+        id: "telurbunga",
+        name: "Telur berbentuk bunga",
+        category: "protein",
+        catLabel: "Lauk",
+        defaultPos: { x: 64, y: 72 },
+        size: 64,
+        crumbColor: "#facc15",
+        svg: `
+          <svg viewBox="0 0 100 84" width="100%" height="100%">
+            <g transform="translate(50,42)">
+              <circle cx="0" cy="-21" r="13" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.6"/>
+              <circle cx="18" cy="-10" r="13" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.6"/>
+              <circle cx="18" cy="10" r="13" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.6"/>
+              <circle cx="0" cy="21" r="13" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.6"/>
+              <circle cx="-18" cy="10" r="13" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.6"/>
+              <circle cx="-18" cy="-10" r="13" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.6"/>
+              <circle cx="0" cy="0" r="22" fill="#ffffff"/>
+              <circle cx="0" cy="0" r="13.5" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
+              <circle cx="-4" cy="-4" r="3.5" fill="#fef08a" opacity="0.85"/>
+            </g>
+          </svg>`
+      },
+      {
+        id: "timun",
+        name: "Timun",
+        category: "sayur",
+        catLabel: "Sayur",
+        defaultPos: { x: 50, y: 26 },
+        size: 60,
+        crumbColor: "#4ade80",
+        svg: `
+          <svg viewBox="0 0 100 84" width="100%" height="100%">
+            <circle cx="36" cy="40" r="21" fill="#15803d"/>
+            <circle cx="36" cy="40" r="17.5" fill="#dcfce7"/>
+            <circle cx="36" cy="40" r="9" fill="#bbf7d0" stroke="#86efac" stroke-width="1.2" stroke-dasharray="2 2"/>
+            <circle cx="62" cy="36" r="20" fill="#166534"/>
+            <circle cx="62" cy="36" r="16.5" fill="#ecfdf5"/>
+            <circle cx="62" cy="36" r="8.5" fill="#bbf7d0" stroke="#86efac" stroke-width="1.2" stroke-dasharray="2 2"/>
+            <circle cx="50" cy="54" r="21" fill="#15803d"/>
+            <circle cx="50" cy="54" r="17.5" fill="#dcfce7"/>
+            <circle cx="50" cy="54" r="9" fill="#bbf7d0" stroke="#4ade80" stroke-width="1.3" stroke-dasharray="2 2"/>
+          </svg>`
+      },
+      {
+        id: "jeruk",
+        name: "Buah jeruk",
+        category: "buah",
+        catLabel: "Buah",
+        defaultPos: { x: 80, y: 26 },
+        size: 56,
+        crumbColor: "#fb923c",
+        svg: `
+          <svg viewBox="0 0 100 84" width="100%" height="100%">
+            <circle cx="42" cy="44" r="24" fill="#ea580c"/>
+            <circle cx="42" cy="44" r="20.5" fill="#fff7ed"/>
+            <circle cx="42" cy="44" r="18" fill="#fb923c"/>
+            <g stroke="#fff7ed" stroke-width="2.2">
+              <line x1="42" y1="25" x2="42" y2="63"/>
+              <line x1="23" y1="44" x2="61" y2="44"/>
+              <line x1="29" y1="31" x2="55" y2="57"/>
+              <line x1="55" y1="31" x2="29" y2="57"/>
+            </g>
+            <path d="M56 54 C64 36, 82 36, 86 52 C82 66, 62 68, 56 54 Z" fill="#f97316" stroke="#fff7ed" stroke-width="2"/>
+          </svg>`
+      },
+      {
+        id: "anggur",
+        name: "Buah anggur",
+        category: "buah",
+        catLabel: "Buah",
+        defaultPos: { x: 80, y: 26 },
+        size: 58,
+        crumbColor: "#9333ea",
+        svg: `
+          <svg viewBox="0 0 100 84" width="100%" height="100%">
+            <path d="M50 22 L50 10 L60 7" fill="none" stroke="#78350f" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M50 15 C60 10, 72 14, 70 22 C62 24, 54 20, 50 15 Z" fill="#16a34a"/>
+            <g stroke="#4c1d95" stroke-width="1.4">
+              <circle cx="38" cy="31" r="9.5" fill="#7e22ce"/>
+              <circle cx="52" cy="30" r="9.5" fill="#9333ea"/>
+              <circle cx="64" cy="33" r="9.5" fill="#7e22ce"/>
+              <circle cx="34" cy="45" r="9.5" fill="#9333ea"/>
+              <circle cx="48" cy="45" r="10" fill="#a855f7"/>
+              <circle cx="62" cy="46" r="9.5" fill="#7e22ce"/>
+              <circle cx="41" cy="58" r="9.5" fill="#7e22ce"/>
+              <circle cx="55" cy="58" r="9.5" fill="#9333ea"/>
+              <circle cx="48" cy="69" r="9" fill="#6b21a8"/>
+            </g>
+            <g fill="#f3e8ff" opacity="0.75">
+              <circle cx="35" cy="28" r="2.2"/><circle cx="49" cy="27" r="2.2"/>
+            </g>
+          </svg>`
+      },
+      {
+        id: "mangga",
+        name: "Buah mangga",
+        category: "buah",
+        catLabel: "Buah",
+        defaultPos: { x: 80, y: 26 },
+        size: 58,
+        crumbColor: "#f59e0b",
+        svg: `
+          <svg viewBox="0 0 100 84" width="100%" height="100%">
+            <ellipse cx="45" cy="45" rx="28" ry="20" transform="rotate(-15 45 45)" fill="#f59e0b" stroke="#d97706" stroke-width="2"/>
+            <ellipse cx="45" cy="44" rx="24" ry="16.5" transform="rotate(-15 45 44)" fill="#fbbf24"/>
+            <g stroke="#d97706" stroke-width="1.6" opacity="0.85">
+              <line x1="28" y1="36" x2="56" y2="54"/>
+              <line x1="36" y1="30" x2="64" y2="48"/>
+              <line x1="26" y1="50" x2="54" y2="31"/>
+              <line x1="36" y1="57" x2="63" y2="38"/>
+            </g>
+            <path d="M52 62 C64 56, 78 58, 84 66 C74 73, 58 72, 52 62 Z" fill="#fb923c" stroke="#ea580c" stroke-width="1.6"/>
+          </svg>`
+      },
+      {
+        id: "apel",
+        name: "Buah apel",
+        category: "buah",
+        catLabel: "Buah",
+        defaultPos: { x: 80, y: 26 },
+        size: 56,
+        crumbColor: "#ef4444",
+        svg: `
+          <svg viewBox="0 0 100 84" width="100%" height="100%">
+            <path d="M22 34 C16 48, 24 64, 42 66 C46 54, 42 40, 22 34 Z" fill="#dc2626"/>
+            <path d="M25 36 C21 48, 28 60, 41 62 C44 52, 40 41, 25 36 Z" fill="#fef9c3"/>
+            <ellipse cx="33" cy="50" rx="1.6" ry="2.5" fill="#451a03"/>
+            <path d="M78 32 C84 46, 76 64, 56 66 C52 54, 56 38, 78 32 Z" fill="#16a34a"/>
+            <path d="M74 35 C79 46, 72 60, 57 62 C54 52, 58 40, 74 35 Z" fill="#fffbeb"/>
+            <ellipse cx="66" cy="49" rx="1.6" ry="2.5" fill="#451a03"/>
+          </svg>`
+      },
+      {
+        id: "susuputih",
+        name: "Susu putih",
+        category: "minuman",
+        catLabel: "Susu",
+        defaultPos: { x: 80, y: 72 },
+        size: 62,
+        crumbColor: "#e0f2fe",
+        isDrink: true,
+        svg: `
+          <svg viewBox="0 0 100 84" width="100%" height="100%">
+            <path d="M58 22 L66 8 L77 10" fill="none" stroke="#0284c7" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M62 15 L64 11" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+            <polygon points="30,22 38,14 62,14 70,22" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.8" stroke-linejoin="round"/>
+            <rect x="30" y="22" width="40" height="54" rx="5" fill="#ffffff" stroke="#0284c7" stroke-width="2"/>
+            <path d="M31 48 Q41 41 50 48 T69 48 L69 72 Q69 75 66 75 L34 75 Q31 75 31 72 Z" fill="#38bdf8"/>
+            <path d="M31 55 Q41 49 50 55 T69 55 L69 72 Q69 75 66 75 L34 75 Q31 75 31 72 Z" fill="#0284c7"/>
+            <path d="M50 28 C50 28, 56 35, 56 39 A6 6 0 1 1 44 39 C44 35, 50 28, 50 28 Z" fill="#bae6fd" stroke="#0284c7" stroke-width="1.2"/>
+            <text x="50" y="67" text-anchor="middle" font-size="9" font-weight="900" fill="#ffffff" font-family="sans-serif">SUSU</text>
+          </svg>`
+      },
+      {
+        id: "susucoklat",
+        name: "Susu coklat",
+        category: "minuman",
+        catLabel: "Susu",
+        defaultPos: { x: 80, y: 72 },
+        size: 62,
+        crumbColor: "#78350f",
+        isDrink: true,
+        svg: `
+          <svg viewBox="0 0 100 84" width="100%" height="100%">
+            <path d="M58 22 L66 8 L77 10" fill="none" stroke="#92400e" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M62 15 L64 11" fill="none" stroke="#fde68a" stroke-width="2" stroke-linecap="round"/>
+            <polygon points="30,22 38,14 62,14 70,22" fill="#d97706" stroke="#78350f" stroke-width="1.8" stroke-linejoin="round"/>
+            <rect x="30" y="22" width="40" height="54" rx="5" fill="#92400e" stroke="#451a03" stroke-width="2"/>
+            <path d="M31 23 L69 23 L69 36 C65 41, 61 33, 57 38 C53 43, 49 34, 44 39 C39 43, 35 34, 31 38 Z" fill="#451a03"/>
+            <path d="M31 53 Q41 47 50 53 T69 53 L69 72 Q69 75 66 75 L34 75 Q31 75 31 72 Z" fill="#b45309"/>
+            <circle cx="50" cy="43" r="5" fill="#fde68a" opacity="0.9"/>
+            <text x="50" y="67" text-anchor="middle" font-size="8.2" font-weight="900" fill="#fef3c7" font-family="sans-serif">COKLAT</text>
+          </svg>`
+      }
+    ];
+
+    const FOOD_MAP = Object.fromEntries(FOOD_CATALOG.map((item) => [item.id, item]));
+
+    /**
+     * ========================================================================
+     * MODULE 3: INDONESIAN SCHOOL STUDENT AVATAR GENERATOR
+     * ========================================================================
+     */
+    const STUDENT_PROFILES = [
+      {
+        name: "Budi Santoso",
+        level: "SMP (Putih-Biru)",
+        uniformTop: "#ffffff",
+        uniformBottom: "#1e3a8a",
+        tieColor: "#1e3a8a",
+        skin: "#eab686",
+        hairColor: "#1e293b",
+        hairStyle: "short",
+        hijab: false,
+        glasses: false
+      },
+      {
+        name: "Siti Aisyah",
+        level: "SMA (Putih-Abu)",
+        uniformTop: "#ffffff",
+        uniformBottom: "#64748b",
+        tieColor: "#64748b",
+        skin: "#f1c29b",
+        hairColor: "#1e293b",
+        hairStyle: "hijab",
+        hijab: true,
+        hijabColor: "#f8fafc",
+        glasses: true
+      },
+      {
+        name: "Raka Pratama",
+        level: "SD (Merah-Putih)",
+        uniformTop: "#ffffff",
+        uniformBottom: "#dc2626",
+        tieColor: "#dc2626",
+        skin: "#d99b66",
+        hairColor: "#0f172a",
+        hairStyle: "spiky",
+        hijab: false,
+        glasses: false
+      },
+      {
+        name: "Nadia Putri",
+        level: "SMP (Putih-Biru)",
+        uniformTop: "#ffffff",
+        uniformBottom: "#1e3a8a",
+        tieColor: "#1e3a8a",
+        skin: "#f3c69f",
+        hairColor: "#27272a",
+        hairStyle: "pigtails",
+        hijab: false,
+        glasses: false
+      },
+      {
+        name: "Dimas Saputra",
+        level: "SMA (Putih-Abu)",
+        uniformTop: "#ffffff",
+        uniformBottom: "#64748b",
+        tieColor: "#64748b",
+        skin: "#c68652",
+        hairColor: "#18181b",
+        hairStyle: "short",
+        hijab: false,
+        glasses: true
+      },
+      {
+        name: "Zahra Rahmadani",
+        level: "SD (Merah-Putih)",
+        uniformTop: "#ffffff",
+        uniformBottom: "#dc2626",
+        tieColor: "#dc2626",
+        skin: "#eab686",
+        hairColor: "#1e293b",
+        hairStyle: "hijab",
+        hijab: true,
+        hijabColor: "#ffffff",
+        glasses: false
+      }
+    ];
+
+    function renderStudentSVG(student, expression = "happy") {
+      const isEating = expression === "eating";
+      const isSpicy = expression === "spicy";
+      const isDelighted = expression === "delighted";
+      const isSad = expression === "disappointed";
+
+      let backHair = "";
+      if (student.hijab) {
+        backHair = `
+          <path d="M42 46 C42 20, 118 20, 118 46 L124 115 C100 124, 60 124, 36 115 Z"
+            fill="${student.hijabColor}" stroke="#cbd5e1" stroke-width="2.5"/>
+        `;
+      } else if (student.hairStyle === "pigtails") {
+        backHair = `
+          <circle cx="38" cy="54" r="14" fill="${student.hairColor}"/>
+          <circle cx="122" cy="54" r="14" fill="${student.hairColor}"/>
+        `;
+      }
+
+      let frontHair = "";
+      if (student.hijab) {
+        frontHair = `
+          <path d="M48 48 C48 26, 112 26, 112 48 C112 36, 48 36, 48 48 Z" fill="${student.hijabColor}"/>
+          <path d="M47 46 C47 23, 113 23, 113 46" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        `;
+      } else if (student.hairStyle === "spiky") {
+        frontHair = `
+          <path d="M46 50 C44 26, 62 16, 80 18 C98 16, 116 26, 114 50 C106 36, 94 34, 80 38 C66 34, 54 36, 46 50 Z"
+            fill="${student.hairColor}"/>
+        `;
+      } else {
+        frontHair = `
+          <path d="M46 52 C45 24, 115 24, 114 52 C106 38, 88 34, 80 36 C70 34, 54 38, 46 52 Z"
+            fill="${student.hairColor}"/>
+        `;
+      }
+
+      let eyes = "";
+      if (isDelighted) {
+        eyes = `
+          <path d="M60 58 Q66 50 72 58" fill="none" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>
+          <path d="M88 58 Q94 50 100 58" fill="none" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>
+        `;
+      } else if (isSpicy) {
+        eyes = `
+          <path d="M60 54 L71 58 L60 62" fill="none" stroke="#1e293b" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M100 54 L89 58 L100 62" fill="none" stroke="#1e293b" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+        `;
+      } else {
+        eyes = `
+          <circle cx="66" cy="57" r="4.2" fill="#1e293b"/>
+          <circle cx="64.5" cy="55.5" r="1.4" fill="#ffffff"/>
+          <circle cx="94" cy="57" r="4.2" fill="#1e293b"/>
+          <circle cx="92.5" cy="55.5" r="1.4" fill="#ffffff"/>
+        `;
+      }
+
+      const brows = isSad
+        ? `<path d="M58 49 L72 46" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round"/>
+           <path d="M102 49 L88 46" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round"/>`
+        : `<path d="M59 47 Q66 44 72 47" fill="none" stroke="#1e293b" stroke-width="2.4" stroke-linecap="round"/>
+           <path d="M88 47 Q94 44 101 47" fill="none" stroke="#1e293b" stroke-width="2.4" stroke-linecap="round"/>`;
+
+      const glasses = student.glasses
+        ? `<g stroke="#334155" stroke-width="2" fill="rgba(255,255,255,0.22)">
+             <rect x="56" y="50" width="19" height="14" rx="4"/>
+             <rect x="85" y="50" width="19" height="14" rx="4"/>
+             <line x1="75" y1="56" x2="85" y2="56"/>
+           </g>`
+        : "";
+
+      let mouth = "";
+      if (isEating) {
+        mouth = `<ellipse cx="80" cy="74" rx="9" ry="8" fill="#991b1b" stroke="#7f1d1d" stroke-width="1.5"/>
+                 <path d="M74 77 Q80 73 86 77" fill="#f87171"/>`;
+      } else if (isSpicy) {
+        mouth = `<ellipse cx="80" cy="74" rx="10" ry="7" fill="#dc2626"/>
+                 <path d="M74 76 Q80 82 86 76" fill="#fda4af"/>`;
+      } else if (isSad) {
+        mouth = `<path d="M70 77 Q80 69 90 77" fill="none" stroke="#7f1d1d" stroke-width="2.8" stroke-linecap="round"/>`;
+      } else if (isDelighted) {
+        mouth = `<path d="M68 70 Q80 84 92 70 Z" fill="#dc2626" stroke="#7f1d1d" stroke-width="1.5"/>`;
+      } else {
+        mouth = `<path d="M70 71 Q80 80 90 71" fill="none" stroke="#7f1d1d" stroke-width="2.8" stroke-linecap="round"/>`;
+      }
+
+      const blushColor = isSpicy ? "#ef4444" : "#fb7185";
+      const blushOpacity = isSpicy ? "0.65" : "0.35";
+      const sweat = isSpicy
+        ? `<path d="M112 44 C112 44, 117 52, 112 56 C107 52, 112 44, 112 44 Z" fill="#38bdf8" stroke="#0284c7" stroke-width="1"/>`
+        : "";
+
+      return `
+        <svg viewBox="0 0 160 150" width="100%" height="100%">
+          ${backHair}
+          <path d="M32 146 C34 114, 54 102, 80 102 C106 102, 126 114, 128 146 Z"
+            fill="${student.uniformTop}" stroke="#cbd5e1" stroke-width="2"/>
+          <polygon points="80,104 74,132 80,140 86,132" fill="${student.tieColor}"/>
+          <polygon points="64,102 80,114 72,120" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.2"/>
+          <polygon points="96,102 80,114 88,120" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.2"/>
+          <rect x="96" y="122" width="16" height="16" rx="2" fill="none" stroke="#cbd5e1" stroke-width="1.4"/>
+          <rect x="100" y="124" width="8" height="5" rx="1" fill="${student.uniformBottom}"/>
+          <rect x="71" y="86" width="18" height="20" rx="6" fill="${student.skin}"/>
+          <rect x="49" y="30" width="62" height="62" rx="28" fill="${student.skin}" stroke="rgba(120,53,15,0.22)" stroke-width="1.8"/>
+          ${frontHair}
+          ${brows}
+          ${eyes}
+          ${glasses}
+          <ellipse cx="59" cy="66" rx="6" ry="3.5" fill="${blushColor}" opacity="${blushOpacity}"/>
+          <ellipse cx="101" cy="66" rx="6" ry="3.5" fill="${blushColor}" opacity="${blushOpacity}"/>
+          ${mouth}
+          ${sweat}
+        </svg>
+      `;
+    }
+
+    /**
+     * ========================================================================
+     * MODULE 4: MAIN GAME CONTROLLER (MOBILE PORTRAIT, LANDSCAPE & PC OPTIMIZED)
+     * ========================================================================
+     */
+    class OmprengGame {
+      constructor() {
+        this.sound = new SoundEngine();
+        this.coins = 100;
+        this.itemPrice = 5;
+        this.mode = "order"; // 'order' | 'free'
+        this.isLidClosed = false;
+        this.isServing = false;
+
+        this.selectedMenuIds = new Set(FOOD_CATALOG.map((f) => f.id));
+        this.activeOuterFoodId = null;
+
+        this.platedItems = [];
+        this.selectedUid = null;
+        this.nextZ = 10;
+        this.uidCounter = 1;
+
+        this.studentIndex = 0;
+        this.currentStudent = STUDENT_PROFILES[0];
+        this.currentOrder = [];
+        this.dragState = null;
+
+        this.initDOM();
+        this.bindStaticButtons();
+        this.generateNewCustomer();
+        this.renderServingStation();
+        this.updateUI();
+      }
+
+      initDOM() {
+        this.coinCountText = document.getElementById("coinCountText");
+        this.coinWallet = document.getElementById("coinWallet");
+        this.bailoutBtn = document.getElementById("bailoutBtn");
+        this.omprengTray = document.getElementById("omprengTray");
+        this.platedItemsLayer = document.getElementById("platedItemsLayer");
+        this.omprengLid = document.getElementById("omprengLid");
+        this.toggleLidBtn = document.getElementById("toggleLidBtn");
+        this.serveBtn = document.getElementById("serveBtn");
+        this.resetTrayBtn = document.getElementById("resetTrayBtn");
+        this.itemToolsBar = document.getElementById("itemToolsBar");
+        this.dragGhost = document.getElementById("dragGhost");
+
+        window.addEventListener("pointermove", (e) => this.onPointerMove(e));
+        window.addEventListener("pointerup", (e) => this.onPointerUp(e));
+        window.addEventListener("pointercancel", (e) => this.onPointerUp(e));
+        window.addEventListener("keydown", (e) => this.onKeyDown(e));
+
+        // Tapping a compartment when an outer plate is active places it right there (mobile tap shortcut!)
+        this.omprengTray.addEventListener("pointerdown", (e) => {
+          const isCompTarget =
+            e.target === this.omprengTray ||
+            e.target.classList.contains("compartment") ||
+            e.target.classList.contains("comp-nasi-round") ||
+            e.target.classList.contains("comp-nasi-slot") ||
+            e.target.id === "omprengInnerRim";
+
+          if (!isCompTarget) return;
+
+          if (this.activeOuterFoodId && !this.isLidClosed && !this.isServing) {
+            const trayRect = this.omprengTray.getBoundingClientRect();
+            const xPct = Math.max(10, Math.min(90, ((e.clientX - trayRect.left) / trayRect.width) * 100));
+            const yPct = Math.max(14, Math.min(86, ((e.clientY - trayRect.top) / trayRect.height) * 100));
+            this.addPlatedItem(this.activeOuterFoodId, xPct, yPct);
+            return;
+          }
+
+          this.selectedUid = null;
+          this.renderPlatedItems();
+          this.updateToolsBar();
+        });
+      }
+
+      bindStaticButtons() {
+        document.getElementById("startChoiceOrder").addEventListener("click", () => this.selectStartMode("order"));
+        document.getElementById("startChoiceFree").addEventListener("click", () => this.selectStartMode("free"));
+        document.getElementById("btnStartToMenu").addEventListener("click", () => this.proceedToMenuSelection());
+
+        document.getElementById("btnOpenMenuSelector").addEventListener("click", () => this.openMenuSelector(false));
+        document.getElementById("headerModeOrder").addEventListener("click", () => this.setMode("order"));
+        document.getElementById("headerModeFree").addEventListener("click", () => this.setMode("free"));
+        document.getElementById("bailoutBtn").addEventListener("click", () => this.claimBailout());
+        document.getElementById("muteToggleBtn").addEventListener("click", () => this.toggleMute());
+        document.getElementById("fullscreenToggleBtn").addEventListener("click", () => this.toggleFullscreen());
+
+        document.getElementById("btnPickOrderMatch").addEventListener("click", () => this.quickSelectOrderItems());
+        document.getElementById("btnPickAll").addEventListener("click", () => this.quickSelectAll());
+        document.getElementById("btnPickMin6").addEventListener("click", () => this.quickSelectMin6());
+        document.getElementById("confirmMenuBtn").addEventListener("click", () => this.confirmMenuSelection());
+
+        this.resetTrayBtn.addEventListener("click", () => this.resetTray());
+        this.toggleLidBtn.addEventListener("click", () => this.toggleLid());
+        this.serveBtn.addEventListener("click", () => this.serveToStudent());
+
+        document.getElementById("btnNextRound").addEventListener("click", () => this.nextRound());
+      }
+
+      /* ----------------------------------------------------------------------
+         TITLE SCREEN & MODE SWITCHING
+         ---------------------------------------------------------------------- */
+      selectStartMode(mode) {
+        this.mode = mode;
+        document.getElementById("startChoiceOrder").classList.toggle("selected", mode === "order");
+        document.getElementById("startChoiceFree").classList.toggle("selected", mode === "free");
+        document.getElementById("headerModeOrder").classList.toggle("active", mode === "order");
+        document.getElementById("headerModeFree").classList.toggle("active", mode === "free");
+        this.sound.playPop();
+      }
+
+      proceedToMenuSelection() {
+        this.sound.playPop();
+        document.getElementById("startModal").classList.add("hidden");
+        this.generateNewCustomer();
+        this.openMenuSelector(true);
+      }
+
+      setMode(mode) {
+        if (this.isServing || this.mode === mode) return;
+        this.mode = mode;
+        document.getElementById("headerModeOrder").classList.toggle("active", mode === "order");
+        document.getElementById("headerModeFree").classList.toggle("active", mode === "free");
+        this.sound.playPop();
+        this.generateNewCustomer();
+        this.renderServingStation();
+        this.updateUI();
+        this.showToast(
+          mode === "order"
+            ? "📋 Beralih ke Mode Pesanan Siswa!"
+            : "🎨 Beralih ke Mode Kreasi Bebas!"
+        );
+      }
+
+      /* ----------------------------------------------------------------------
+         PRE-PLATING MENU SELECTION MODAL
+         ---------------------------------------------------------------------- */
+      openMenuSelector(isNewRound = false) {
+        if (this.isServing) return;
+        this.sound.playPop();
+
+        if (isNewRound && this.mode === "order") {
+          this.currentOrder.forEach((id) => this.selectedMenuIds.add(id));
+        }
+
+        const hintBox = document.getElementById("menuSelectOrderHint");
+        const pickOrderBtn = document.getElementById("btnPickOrderMatch");
+
+        if (this.mode === "order") {
+          pickOrderBtn.style.display = "inline-flex";
+          const orderNames = this.currentOrder.map((id) => FOOD_MAP[id].name).join(", ");
+          hintBox.innerHTML = `
+            <div>
+              <strong>📋 Pesanan ${this.currentStudent.name} (${this.currentStudent.level}):</strong>
+              <span style="color:#b45309;font-weight:800;">${orderNames}</span>
+            </div>
+            <span style="font-size:0.7rem;font-weight:700;">Menu bertanda biru adalah pesanan siswa.</span>
+          `;
+        } else {
+          pickOrderBtn.style.display = "none";
+          hintBox.innerHTML = `
+            <div>
+              <strong>🎨 Mode Kreasi Bebas:</strong>
+              <span>Pilih menu favoritmu (Nasi, Lauk, Sayur, Buah, Susu) untuk ditaruh di meja saji.</span>
+            </div>
+          `;
+        }
+
+        this.renderMenuCatalog();
+        document.getElementById("menuSelectModal").classList.remove("hidden");
+      }
+
+      renderMenuCatalog() {
+        const grid = document.getElementById("menuCatalogGrid");
+        grid.innerHTML = "";
+
+        FOOD_CATALOG.forEach((food) => {
+          const isPicked = this.selectedMenuIds.has(food.id);
+          const isOrdered = this.mode === "order" && this.currentOrder.includes(food.id);
+
+          const card = document.createElement("div");
+          card.className = `menu-pick-card ${isPicked ? "picked" : ""} ${isOrdered ? "is-ordered-item" : ""}`;
+          card.setAttribute("role", "button");
+          card.setAttribute("tabindex", "0");
+          card.innerHTML = `
+            <span class="pick-check-badge">✓</span>
+            <div class="pick-svg-box">${food.svg}</div>
+            <div class="pick-item-name">${food.name}</div>
+            <div class="pick-item-meta">${food.catLabel} • 5 Koin</div>
+          `;
+
+          card.addEventListener("click", () => {
+            if (this.selectedMenuIds.has(food.id)) {
+              this.selectedMenuIds.delete(food.id);
+            } else {
+              this.selectedMenuIds.add(food.id);
+            }
+            this.sound.playPop();
+            this.renderMenuCatalog();
+          });
+
+          grid.appendChild(card);
+        });
+
+        const confirmBtn = document.getElementById("confirmMenuBtn");
+        const count = this.selectedMenuIds.size;
+        confirmBtn.disabled = count === 0;
+        confirmBtn.textContent =
+          count === 0
+            ? "⚠️ Pilih Minimal 1 Menu Terlebih Dahulu"
+            : `🚀 Mulai Menata Ompreng (${count} Menu Terpilih)`;
+      }
+
+      quickSelectOrderItems() {
+        if (this.mode !== "order") return;
+        this.selectedMenuIds.clear();
+        this.currentOrder.forEach((id) => this.selectedMenuIds.add(id));
+        ["nasi", "timun", "susuputih", "mangga"].forEach((id) => {
+          if (this.selectedMenuIds.size < 6) this.selectedMenuIds.add(id);
+        });
+        this.sound.playPop();
+        this.renderMenuCatalog();
+      }
+
+      quickSelectAll() {
+        this.selectedMenuIds = new Set(FOOD_CATALOG.map((f) => f.id));
+        this.sound.playPop();
+        this.renderMenuCatalog();
+      }
+
+      quickSelectMin6() {
+        this.selectedMenuIds.clear();
+        if (this.mode === "order") {
+          this.currentOrder.forEach((id) => this.selectedMenuIds.add(id));
+        }
+        const defaults = ["nasi", "katsu", "sambal", "timun", "mangga", "susucoklat"];
+        for (const id of defaults) {
+          if (this.selectedMenuIds.size >= 6) break;
+          this.selectedMenuIds.add(id);
+        }
+        this.sound.playPop();
+        this.renderMenuCatalog();
+      }
+
+      confirmMenuSelection() {
+        if (this.selectedMenuIds.size === 0) {
+          this.showToast("⚠️ Pilih minimal 1 menu untuk diletakkan di meja saji!");
+          return;
+        }
+        this.sound.playPop();
+        this.activeOuterFoodId = null;
+        document.getElementById("menuSelectModal").classList.add("hidden");
+        this.renderServingStation();
+        this.updateUI();
+        this.showToast("✨ Tap piring menu hingga menyala emas, lalu geser ke ompreng atau tap sekat tujuan!");
+      }
+
+      /* ----------------------------------------------------------------------
+         CUSTOMER & ORDER GENERATION
+         ---------------------------------------------------------------------- */
+      generateNewCustomer() {
+        this.currentStudent = STUDENT_PROFILES[this.studentIndex % STUDENT_PROFILES.length];
+        this.studentIndex++;
+
+        const mains = ["katsu", "barendo", "ayampop", "telurbunga"];
+        const veggies = ["bayam", "timun"];
+        const fruits = ["jeruk", "anggur", "mangga", "apel"];
+        const milks = ["susuputih", "susucoklat"];
+
+        const pickRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+        const combo = ["nasi", pickRandom(mains)];
+        if (Math.random() < 0.72) combo.push("sambal");
+        combo.push(pickRandom(veggies));
+        combo.push(pickRandom(fruits));
+        if (Math.random() < 0.65) combo.push(pickRandom(milks));
+
+        this.currentOrder = Array.from(new Set(combo));
+        this.updateOrderBanner();
+      }
+
+      updateOrderBanner() {
+        const avatarBox = document.getElementById("bannerStudentAvatar");
+        const modeLabel = document.getElementById("bannerModeLabel");
+        const studentName = document.getElementById("bannerStudentName");
+        const checklist = document.getElementById("orderChecklist");
+
+        avatarBox.innerHTML = renderStudentSVG(this.currentStudent, "happy");
+        const platedIds = this.platedItems.map((p) => p.foodId);
+
+        if (this.mode === "order") {
+          modeLabel.textContent = `Pesanan Siswa • ${this.currentStudent.level}`;
+          studentName.textContent = this.currentStudent.name;
+
+          checklist.innerHTML = this.currentOrder
+            .map((id) => {
+              const food = FOOD_MAP[id];
+              const matched = platedIds.includes(id);
+              return `
+                <span class="order-chip ${matched ? "matched" : ""}">
+                  <span class="chip-check">✓</span>
+                  <span>${food.name}</span>
+                </span>
+              `;
+            })
+            .join("");
+        } else {
+          modeLabel.textContent = `Kreasi Bebas • Pelanggan: ${this.currentStudent.name}`;
+          studentName.textContent = "Target 4 Sehat 5 Sempurna";
+
+          const cats = new Set(platedIds.map((id) => FOOD_MAP[id].category));
+          const nutritionGroups = [
+            { key: "karbo", label: "Nasi" },
+            { key: "protein", label: "Lauk" },
+            { key: "sayur", label: "Sayur" },
+            { key: "buah", label: "Buah" },
+            { key: "minuman", label: "Susu" }
+          ];
+
+          checklist.innerHTML = nutritionGroups
+            .map((g) => {
+              const matched = cats.has(g.key);
+              return `
+                <span class="order-chip ${matched ? "matched" : ""}">
+                  <span class="chip-check">✓</span>
+                  <span>${g.label}</span>
+                </span>
+              `;
+            })
+            .join("");
+        }
+      }
+
+      /* ----------------------------------------------------------------------
+         RENDER SURROUNDING SERVING DISHES
+         ---------------------------------------------------------------------- */
+      renderServingStation() {
+        const topRow = document.getElementById("dishRowTop");
+        const leftCol = document.getElementById("dishColLeft");
+        const rightCol = document.getElementById("dishColRight");
+        const bottomRow = document.getElementById("dishRowBottom");
+
+        topRow.innerHTML = "";
+        leftCol.innerHTML = "";
+        rightCol.innerHTML = "";
+        bottomRow.innerHTML = "";
+
+        const activeFoods = FOOD_CATALOG.filter((f) => this.selectedMenuIds.has(f.id));
+
+        activeFoods.forEach((food, idx) => {
+          const isReady = this.activeOuterFoodId === food.id;
+          const isOrdered = this.mode === "order" && this.currentOrder.includes(food.id);
+
+          const card = document.createElement("div");
+          card.className = `serving-dish ${isOrdered ? "ordered-highlight" : ""} ${isReady ? "active-ready" : ""}`;
+          card.setAttribute("role", "button");
+          card.setAttribute("tabindex", "0");
+          card.innerHTML = `
+            ${isReady ? `<span class="ready-pill-badge">✨ Siap Digeser!</span>` : ""}
+            <div class="dish-plate-inner">${food.svg}</div>
+            <div class="dish-name">${food.name}</div>
+            <div class="dish-price-tag">5 Koin</div>
+          `;
+
+          // Click listener activates an inactive dish WITHOUT blocking horizontal touch scrolling!
+          card.addEventListener("click", () => {
+            if (this.isServing) return;
+            if (this.isLidClosed) {
+              this.showToast("🛡️ Buka tutup ompreng dulu sebelum menambah menu!");
+              return;
+            }
+            if (this.coins < this.itemPrice) {
+              this.triggerInsufficientCoins();
+              return;
+            }
+
+            if (this.activeOuterFoodId !== food.id) {
+              this.activeOuterFoodId = food.id;
+              this.sound.playPop();
+              this.renderServingStation();
+              this.showToast(`✨ ${food.name} aktif! Geser ke ompreng atau tap langsung sekat tujuan.`);
+            } else {
+              // Tapping an ALREADY active outer dish places it neatly into its matching compartment!
+              const jitterX = (Math.random() - 0.5) * 8;
+              const jitterY = (Math.random() - 0.5) * 6;
+              this.addPlatedItem(food.id, food.defaultPos.x + jitterX, food.defaultPos.y + jitterY);
+            }
+          });
+
+          // Pointerdown starts immediate dragging ONLY when this dish is ALREADY activated (.active-ready)
+          card.addEventListener("pointerdown", (e) => {
+            if (this.activeOuterFoodId !== food.id) return;
+            if (this.isServing || this.isLidClosed) return;
+            if (this.coins < this.itemPrice) {
+              this.triggerInsufficientCoins();
+              return;
+            }
+
+            e.preventDefault();
+            const isTouch = e.pointerType === "touch";
+            const touchOffsetY = isTouch ? -58 : 0;
+
+            this.dragState = {
+              type: "new",
+              foodId: food.id,
+              startX: e.clientX,
+              startY: e.clientY,
+              isTouch,
+              touchOffsetY,
+              moved: false
+            };
+
+            this.dragGhost.innerHTML = `
+              <div style="position:relative;width:${food.size}px;height:${food.size * 0.85}px;">
+                ${food.svg}
+                ${isTouch ? `<div class="drag-target-ring"></div>` : ""}
+              </div>
+            `;
+            this.dragGhost.style.left = `${e.clientX}px`;
+            this.dragGhost.style.top = `${e.clientY + touchOffsetY}px`;
+            this.dragGhost.style.display = "block";
+          });
+
+          if (idx < 3) {
+            topRow.appendChild(card);
+          } else if (idx < 7) {
+            leftCol.appendChild(card);
+          } else if (idx < 11) {
+            rightCol.appendChild(card);
+          } else {
+            bottomRow.appendChild(card);
+          }
+        });
+      }
+
+      /* ----------------------------------------------------------------------
+         PC KEYBOARD SHORTCUTS & FULLSCREEN SUPPORT
+         ---------------------------------------------------------------------- */
+      onKeyDown(e) {
+        const anyModalOpen =
+          !document.getElementById("startModal").classList.contains("hidden") ||
+          !document.getElementById("menuSelectModal").classList.contains("hidden") ||
+          !document.getElementById("diningModal").classList.contains("hidden");
+        if (anyModalOpen || this.isServing) return;
+
+        if (e.key === "r" || e.key === "R") {
+          if (this.selectedUid && !this.isLidClosed) {
+            e.preventDefault();
+            this.rotateSelected(e.shiftKey ? -22.5 : 22.5);
+          }
+        } else if (e.key === "Delete" || e.key === "Backspace") {
+          if (this.selectedUid && !this.isLidClosed) {
+            e.preventDefault();
+            this.deleteSelected();
+          }
+        } else if (e.code === "Space") {
+          e.preventDefault();
+          this.toggleLid();
+        }
+      }
+
+      async toggleFullscreen() {
+        try {
+          if (!document.fullscreenElement) {
+            await document.documentElement.requestFullscreen();
+            this.showToast("🖥️ Mode Layar Penuh aktif!");
+          } else {
+            await document.exitFullscreen();
+          }
+        } catch (err) {
+          this.showToast("ℹ️ Tampilan sudah otomatis menyesuaikan layar perangkat Anda.");
+        }
+      }
+
+      /* ----------------------------------------------------------------------
+         IMMEDIATE DIRECT DRAGGING FOR ITEMS INSIDE THE OMPRENG
+         ---------------------------------------------------------------------- */
+      startPlatedItemDirectDrag(e, uid) {
+        if (this.isServing || this.isLidClosed) return;
+        e.stopPropagation();
+
+        const item = this.platedItems.find((p) => p.uid === uid);
+        if (!item) return;
+
+        const wasAlreadySelected = this.selectedUid === uid;
+        this.selectedUid = uid;
+        item.zIndex = ++this.nextZ;
+
+        if (!wasAlreadySelected) {
+          this.renderPlatedItems();
+          this.updateToolsBar();
+        } else {
+          const el = this.platedItemsLayer.querySelector(`[data-uid="${uid}"]`);
+          if (el) el.style.zIndex = item.zIndex;
+        }
+
+        const trayRect = this.omprengTray.getBoundingClientRect();
+        const isTouch = e.pointerType === "touch";
+        this.dragState = {
+          type: "move",
+          uid,
+          startX: e.clientX,
+          startY: e.clientY,
+          origXPct: item.xPct,
+          origYPct: item.yPct,
+          trayRect,
+          isTouch,
+          moved: false
+        };
+      }
+
+      onPointerMove(e) {
+        if (!this.dragState) return;
+
+        const dx = e.clientX - this.dragState.startX;
+        const dy = e.clientY - this.dragState.startY;
+        if (Math.hypot(dx, dy) > 5) {
+          this.dragState.moved = true;
+        }
+
+        if (this.dragState.type === "new") {
+          const targetY = e.clientY + this.dragState.touchOffsetY;
+          this.dragGhost.style.left = `${e.clientX}px`;
+          this.dragGhost.style.top = `${targetY}px`;
+
+          const overTray = this.isPointInsideTray(e.clientX, targetY);
+          this.omprengTray.classList.toggle("drag-over", overTray);
+          this.highlightHoveredCompartment(e.clientX, targetY);
+        } else if (this.dragState.type === "move") {
+          const { trayRect, origXPct, origYPct, uid, isTouch, moved } = this.dragState;
+          const item = this.platedItems.find((p) => p.uid === uid);
+          if (!item) return;
+
+          const fingerLiftPct = isTouch && moved ? -(38 / trayRect.height) * 100 : 0;
+          const newXPct = origXPct + (dx / trayRect.width) * 100;
+          const newYPct = origYPct + (dy / trayRect.height) * 100 + fingerLiftPct;
+          item.xPct = Math.max(10, Math.min(90, newXPct));
+          item.yPct = Math.max(14, Math.min(86, newYPct));
+
+          const el = this.platedItemsLayer.querySelector(`[data-uid="${uid}"]`);
+          if (el) {
+            el.style.left = `${item.xPct}%`;
+            el.style.top = `${item.yPct}%`;
+          }
+          const checkY = isTouch && moved ? e.clientY - 38 : e.clientY;
+          this.highlightHoveredCompartment(e.clientX, checkY);
+        }
+      }
+
+      onPointerUp(e) {
+        if (!this.dragState) return;
+        const state = this.dragState;
+        this.dragState = null;
+
+        this.dragGhost.style.display = "none";
+        this.omprengTray.classList.remove("drag-over");
+        this.clearCompartmentHighlights();
+
+        if (state.type === "new") {
+          const targetY = e.clientY + state.touchOffsetY;
+          if (state.moved && this.isPointInsideTray(e.clientX, targetY)) {
+            const trayRect = this.omprengTray.getBoundingClientRect();
+            const xPct = Math.max(10, Math.min(90, ((e.clientX - trayRect.left) / trayRect.width) * 100));
+            const yPct = Math.max(14, Math.min(86, ((targetY - trayRect.top) / trayRect.height) * 100));
+            this.addPlatedItem(state.foodId, xPct, yPct);
+          }
+        } else if (state.type === "move" && state.moved) {
+          this.sound.playPlace();
+        }
+      }
+
+      isPointInsideTray(clientX, clientY) {
+        const rect = this.omprengTray.getBoundingClientRect();
+        return (
+          clientX >= rect.left &&
+          clientX <= rect.right &&
+          clientY >= rect.top &&
+          clientY <= rect.bottom
+        );
+      }
+
+      highlightHoveredCompartment(clientX, clientY) {
+        document.querySelectorAll(".compartment, .comp-nasi-round").forEach((comp) => {
+          const r = comp.getBoundingClientRect();
+          const inside = clientX >= r.left && clientX <= r.right && clientY >= r.top && clientY <= r.bottom;
+          comp.classList.toggle("highlight", inside);
+        });
+      }
+
+      clearCompartmentHighlights() {
+        document.querySelectorAll(".compartment, .comp-nasi-round").forEach((comp) => {
+          comp.classList.remove("highlight");
+        });
+      }
+
+      addPlatedItem(foodId, xPct, yPct) {
+        if (this.coins < this.itemPrice) {
+          this.triggerInsufficientCoins();
+          return;
+        }
+
+        this.coins -= this.itemPrice;
+        this.sound.playPlace();
+
+        const uid = `item_${this.uidCounter++}`;
+        this.platedItems.push({
+          uid,
+          foodId,
+          xPct: Math.max(10, Math.min(90, xPct)),
+          yPct: Math.max(14, Math.min(86, yPct)),
+          rotation: 0,
+          zIndex: ++this.nextZ,
+          justAdded: true
+        });
+
+        this.selectedUid = uid;
+        this.renderPlatedItems();
+        this.updateUI();
+      }
+
+      renderPlatedItems() {
+        this.platedItemsLayer.innerHTML = "";
+        this.platedItems.forEach((item) => {
+          const food = FOOD_MAP[item.foodId];
+          const isSelected = item.uid === this.selectedUid;
+          const el = document.createElement("div");
+          el.className = `plated-item ${isSelected ? "selected" : ""} ${item.justAdded ? "pop-in" : ""}`;
+          item.justAdded = false;
+          el.dataset.uid = item.uid;
+          el.style.left = `${item.xPct}%`;
+          el.style.top = `${item.yPct}%`;
+          el.style.zIndex = item.zIndex;
+
+          el.innerHTML = `
+            <div class="plated-item-inner" style="width:${food.size}px;height:${food.size * 0.84}px;transform:rotate(${item.rotation}deg);">
+              ${food.svg}
+            </div>
+          `;
+
+          el.addEventListener("pointerdown", (e) => {
+            e.preventDefault();
+            this.startPlatedItemDirectDrag(e, item.uid);
+          });
+
+          this.platedItemsLayer.appendChild(el);
+        });
+      }
+
+      /* ----------------------------------------------------------------------
+         THUMB-FRIENDLY ITEM MANIPULATION TOOLBAR (ROTATE, STACK, DELETE)
+         ---------------------------------------------------------------------- */
+      updateToolsBar() {
+        if (this.isLidClosed) {
+          this.itemToolsBar.innerHTML = `<span class="tool-hint-text">🛡️ Ompreng tertutup rapat. Klik <strong>Sajikan</strong> atau buka tutup untuk revisi.</span>`;
+          return;
+        }
+
+        const selected = this.platedItems.find((p) => p.uid === this.selectedUid);
+        if (!selected) {
+          this.itemToolsBar.innerHTML = `<span class="tool-hint-text">👆 1) Tap piring menu hingga menyala emas, lalu geser ke ompreng (atau tap sekat) • 2) Lauk di ompreng langsung bisa digeser!</span>`;
+          return;
+        }
+
+        const food = FOOD_MAP[selected.foodId];
+        this.itemToolsBar.innerHTML = "";
+
+        const label = document.createElement("span");
+        label.style.cssText = "color:#fde68a;font-size:0.74rem;font-weight:800;margin-right:2px;";
+        label.textContent = `${food.name}:`;
+
+        const btnRotL = document.createElement("button");
+        btnRotL.type = "button";
+        btnRotL.className = "mini-tool-btn";
+        btnRotL.textContent = "↺ Putar";
+        btnRotL.addEventListener("click", () => this.rotateSelected(-22.5));
+
+        const btnRotR = document.createElement("button");
+        btnRotR.type = "button";
+        btnRotR.className = "mini-tool-btn";
+        btnRotR.textContent = "↻ Putar";
+        btnRotR.addEventListener("click", () => this.rotateSelected(22.5));
+
+        const btnTop = document.createElement("button");
+        btnTop.type = "button";
+        btnTop.className = "mini-tool-btn";
+        btnTop.textContent = "⬆ Tumpuk";
+        btnTop.addEventListener("click", () => this.bringSelectedToTop());
+
+        const btnDel = document.createElement("button");
+        btnDel.type = "button";
+        btnDel.className = "mini-tool-btn danger";
+        btnDel.textContent = "🗑️ Hapus (+5)";
+        btnDel.addEventListener("click", () => this.deleteSelected());
+
+        this.itemToolsBar.append(label, btnRotL, btnRotR, btnTop, btnDel);
+      }
+
+      rotateSelected(deltaDeg) {
+        const item = this.platedItems.find((p) => p.uid === this.selectedUid);
+        if (!item || this.isLidClosed) return;
+        item.rotation = (item.rotation + deltaDeg) % 360;
+        this.sound.playPop();
+        this.renderPlatedItems();
+      }
+
+      bringSelectedToTop() {
+        const item = this.platedItems.find((p) => p.uid === this.selectedUid);
+        if (!item || this.isLidClosed) return;
+        item.zIndex = ++this.nextZ;
+        this.sound.playPop();
+        this.renderPlatedItems();
+        this.showToast(`⬆ ${FOOD_MAP[item.foodId].name} ditumpuk ke lapisan atas!`);
+      }
+
+      deleteSelected() {
+        const idx = this.platedItems.findIndex((p) => p.uid === this.selectedUid);
+        if (idx === -1 || this.isLidClosed) return;
+        const removed = this.platedItems.splice(idx, 1)[0];
+        this.coins += this.itemPrice;
+        this.selectedUid = this.platedItems.length ? this.platedItems[this.platedItems.length - 1].uid : null;
+        this.sound.playRefund();
+        this.renderPlatedItems();
+        this.updateUI();
+        this.showToast(`🪙 +5 Koin dikembalikan (${FOOD_MAP[removed.foodId].name} dihapus)`);
+      }
+
+      resetTray() {
+        if (this.isServing) return;
+        if (this.platedItems.length === 0 && !this.isLidClosed) {
+          this.showToast("Ompreng sudah kosong.");
+          return;
+        }
+        const refundTotal = this.platedItems.length * this.itemPrice;
+        this.coins += refundTotal;
+        this.platedItems = [];
+        this.selectedUid = null;
+        if (this.isLidClosed) {
+          this.isLidClosed = false;
+          this.omprengLid.classList.remove("closed");
+          this.sound.playLidClank(false);
+        } else if (refundTotal > 0) {
+          this.sound.playRefund();
+        }
+        this.renderPlatedItems();
+        this.updateUI();
+        if (refundTotal > 0) {
+          this.showToast(`🔄 Ompreng di-reset! +${refundTotal} Koin dikembalikan.`);
+        }
+      }
+
+      /* ----------------------------------------------------------------------
+         CLOSING & OPENING THE STAINLESS STEEL LID
+         ---------------------------------------------------------------------- */
+      toggleLid() {
+        if (this.isServing) return;
+        if (!this.isLidClosed && this.platedItems.length === 0) {
+          this.showToast("🍽️ Isi ompreng dengan minimal 1 lauk sebelum menutupnya!");
+          return;
+        }
+
+        this.isLidClosed = !this.isLidClosed;
+        this.omprengLid.classList.toggle("closed", this.isLidClosed);
+        this.sound.playLidClank(this.isLidClosed);
+
+        if (this.isLidClosed) {
+          this.selectedUid = null;
+          this.activeOuterFoodId = null;
+          this.renderPlatedItems();
+          this.renderServingStation();
+        }
+        this.updateUI();
+      }
+
+      /* ----------------------------------------------------------------------
+         COIN ECONOMY, BAILOUT & UI SYNC
+         ---------------------------------------------------------------------- */
+      triggerInsufficientCoins() {
+        this.coinWallet.classList.remove("shake");
+        void this.coinWallet.offsetWidth;
+        this.coinWallet.classList.add("shake");
+        this.showToast("⚠️ Koin habis! Klik tombol '+30 Koin' di atas atau hapus lauk.");
+      }
+
+      claimBailout() {
+        if (this.coins >= 5) return;
+        this.coins += 30;
+        this.sound.playCoin();
+        this.coinWallet.classList.remove("pulse");
+        void this.coinWallet.offsetWidth;
+        this.coinWallet.classList.add("pulse");
+        this.updateUI();
+        this.showToast("🎉 Bantuan Koin Kantin +30 Koin berhasil diklaim!");
+      }
+
+      toggleMute() {
+        this.sound.muted = !this.sound.muted;
+        document.getElementById("muteToggleBtn").textContent = this.sound.muted ? "🔇" : "🔊";
+      }
+
+      updateUI() {
+        this.coinCountText.textContent = this.coins;
+        this.bailoutBtn.classList.toggle("visible", this.coins < 5);
+
+        this.toggleLidBtn.innerHTML = this.isLidClosed
+          ? "🔓 Buka Tutup"
+          : "🛡️ Tutup Ompreng";
+        this.serveBtn.disabled = !(this.isLidClosed && this.platedItems.length > 0 && !this.isServing);
+        this.resetTrayBtn.disabled = this.isServing;
+
+        this.updateToolsBar();
+        this.updateOrderBanner();
+      }
+
+      showToast(message) {
+        const container = document.getElementById("toastContainer");
+        container.innerHTML = "";
+        const toast = document.createElement("div");
+        toast.className = "toast-msg";
+        toast.textContent = message;
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = "0";
+          toast.style.transition = "opacity 0.25s ease";
+          setTimeout(() => toast.remove(), 260);
+        }, 2300);
+      }
+
+      /* ----------------------------------------------------------------------
+         SERVING & ANIMATED SCHOOL STUDENT DINING SIMULATION
+         ---------------------------------------------------------------------- */
+      async serveToStudent() {
+        if (!this.isLidClosed || this.platedItems.length === 0 || this.isServing) return;
+        this.isServing = true;
+        this.updateUI();
+
+        const diningModal = document.getElementById("diningModal");
+        const diningLayoutWrap = document.getElementById("diningLayoutWrap");
+        const statusText = document.getElementById("diningStatusText");
+        const studentBox = document.getElementById("studentCharacterBox");
+        const diningLid = document.getElementById("diningLidOverlay");
+        const diningFoodLayer = document.getElementById("diningFoodLayer");
+        const evalPanel = document.getElementById("evaluationPanel");
+
+        diningLayoutWrap.classList.remove("with-eval");
+        evalPanel.classList.remove("visible");
+        diningLid.classList.remove("opened");
+        studentBox.classList.remove("eating-bob");
+        studentBox.innerHTML = renderStudentSVG(this.currentStudent, "happy");
+        statusText.textContent = `${this.currentStudent.name} menerima ompreng dari mbek ni...`;
+
+        const itemsToEat = [...this.platedItems].sort((a, b) => b.zIndex - a.zIndex);
+        diningFoodLayer.innerHTML = "";
+
+        const miniEls = itemsToEat.map((item) => {
+          const food = FOOD_MAP[item.foodId];
+          const el = document.createElement("div");
+          el.className = "dining-food-item";
+          el.style.left = `${item.xPct}%`;
+          el.style.top = `${item.yPct}%`;
+          el.style.zIndex = item.zIndex;
+          const miniScale = 0.54;
+          el.innerHTML = `
+            <div style="width:${food.size * miniScale}px;height:${food.size * 0.84 * miniScale}px;transform:rotate(${item.rotation}deg);">
+              ${food.svg}
+            </div>
+          `;
+          diningFoodLayer.appendChild(el);
+          return { item, food, el };
+        });
+
+        diningModal.classList.remove("hidden");
+
+        await this.sleep(580);
+        this.sound.playLidClank(false);
+        diningLid.classList.add("opened");
+        statusText.textContent = `${this.currentStudent.name} membuka tutup ompreng... "Wah, sedapnya!"`;
+        await this.sleep(620);
+
+        studentBox.classList.add("eating-bob");
+
+        for (const entry of miniEls) {
+          const { food, el } = entry;
+          const isSambal = food.id === "sambal";
+          const isDrink = Boolean(food.isDrink);
+
+          if (isDrink) {
+            statusText.textContent = `🥤 ${this.currentStudent.name} menyedot ${food.name}... "Segar sekali!"`;
+          } else if (isSambal) {
+            statusText.textContent = `🌶️ ${this.currentStudent.name} mencocol ${food.name}... "Huh hah pedas!"`;
+          } else {
+            statusText.textContent = `😋 ${this.currentStudent.name} menyantap ${food.name}...`;
+          }
+
+          studentBox.innerHTML = renderStudentSVG(this.currentStudent, "eating");
+
+          if (isDrink) this.sound.playSip();
+          else this.sound.playChew();
+          this.spawnCrumbs(el, food.crumbColor);
+          el.classList.add("bite-1");
+          await this.sleep(280);
+
+          if (isDrink) this.sound.playSip();
+          else this.sound.playChew();
+          this.spawnCrumbs(el, food.crumbColor);
+          el.classList.add("bite-2");
+          if (isSambal) {
+            studentBox.innerHTML = renderStudentSVG(this.currentStudent, "spicy");
+          }
+          await this.sleep(280);
+
+          el.classList.add("eaten");
+          await this.sleep(140);
+        }
+
+        studentBox.classList.remove("eating-bob");
+        statusText.textContent = "✨ Ompreng sudah bersih tandas! Penilaian pelanggan:";
+
+        this.showFinalEvaluation();
+      }
+
+      spawnCrumbs(targetEl, color) {
+        const parent = document.getElementById("diningOmprengMini");
+        const left = parseFloat(targetEl.style.left);
+        const top = parseFloat(targetEl.style.top);
+
+        for (let i = 0; i < 6; i++) {
+          const c = document.createElement("div");
+          c.className = "crumb-particle";
+          c.style.background = color;
+          c.style.left = `${left}%`;
+          c.style.top = `${top}%`;
+          const angle = Math.random() * Math.PI * 2;
+          const dist = 14 + Math.random() * 22;
+          c.style.setProperty("--dx", `${Math.cos(angle) * dist}px`);
+          c.style.setProperty("--dy", `${Math.sin(angle) * dist - 8}px`);
+          parent.appendChild(c);
+          setTimeout(() => c.remove(), 560);
+        }
+      }
+
+      showFinalEvaluation() {
+        const servedIds = this.platedItems.map((p) => p.foodId);
+        const uniqueServedIds = Array.from(new Set(servedIds));
+        const servedNames = uniqueServedIds.map((id) => FOOD_MAP[id].name);
+        const spentCoins = this.platedItems.length * this.itemPrice;
+
+        let stars = 3;
+        let baseReward = 15;
+        let matchBonus = 0;
+        let varietyBonus = 0;
+        let reviewText = "";
+        let expression = "delighted";
+        let breakdownHTML = "";
+
+        const neatCount = this.platedItems.filter(
+          (p) => p.xPct >= 10 && p.xPct <= 90 && p.yPct >= 14 && p.yPct <= 86
+        ).length;
+        const neatBonus = neatCount === this.platedItems.length ? 4 : 2;
+
+        if (this.mode === "order") {
+          const matchedItems = this.currentOrder.filter((id) => uniqueServedIds.includes(id));
+          const missingItems = this.currentOrder.filter((id) => !uniqueServedIds.includes(id));
+          const extraCount = Math.max(0, servedIds.length - matchedItems.length);
+          const accuracyRatio = matchedItems.length / this.currentOrder.length;
+
+          matchBonus = matchedItems.length * 5;
+          varietyBonus = missingItems.length === 0 ? 7 + neatBonus : neatBonus;
+
+          if (missingItems.length === 0 && extraCount === 0) {
+            stars = 5;
+            expression = "delighted";
+            reviewText = `"Luar biasa! Pesanan ${servedNames.join(", ")} lengkap dan pas banget di ompreng 5 sekat karya mbek ni! Makasih ya!"`;
+          } else if (missingItems.length === 0 && extraCount > 0) {
+            stars = 5;
+            expression = "delighted";
+            reviewText = `"Mantap! Semua pesananku lengkap, malah dikasih bonus menu tambahan juga! Kenyang dan nikmat sekali!"`;
+          } else if (accuracyRatio >= 0.6) {
+            stars = 4;
+            expression = servedIds.includes("sambal") ? "spicy" : "happy";
+            const missingNames = missingItems.map((id) => FOOD_MAP[id].name).join(", ");
+            reviewText = `"Enak sih ${servedNames.join(", ")}, tapi ${missingNames} pesananku belum ada ya? Besok dilengkapi lagi ya!"`;
+          } else {
+            stars = 2;
+            expression = "disappointed";
+            const missingNames = missingItems.map((id) => FOOD_MAP[id].name).join(", ");
+            reviewText = `"Yah... menu yang disajikan beda sama pesananku (${missingNames} belum ada). Untung rasanya tetap lumayan!"`;
+          }
+
+          const totalEarned = baseReward + matchBonus + varietyBonus;
+          this.coins += totalEarned;
+
+          breakdownHTML = `
+            <div class="eval-row"><span>Modal Menu Terpakai (${this.platedItems.length} porsi):</span><strong>-${spentCoins} Koin</strong></div>
+            <div class="eval-row"><span>Pembayaran Dasar Pelanggan:</span><strong>+${baseReward} Koin</strong></div>
+            <div class="eval-row"><span>Ketepatan Pesanan (${matchedItems.length}/${this.currentOrder.length} menu):</span><strong>+${matchBonus} Koin</strong></div>
+            <div class="eval-row"><span>Bonus Kelengkapan &amp; Kerapian:</span><strong>+${varietyBonus} Koin</strong></div>
+            <div class="eval-row total"><span>Total Hadiah Diterima:</span><span>+${totalEarned} Koin 🪙</span></div>
+          `;
+        } else {
+          const categories = new Set(servedIds.map((id) => FOOD_MAP[id].category));
+          const groups = ["karbo", "protein", "sayur", "buah", "minuman"];
+          const groupCount = groups.filter((g) => categories.has(g)).length;
+
+          matchBonus = groupCount * 5;
+          varietyBonus = Math.min(8, uniqueServedIds.length * 2) + neatBonus;
+
+          if (groupCount === 5) {
+            stars = 5;
+            expression = "delighted";
+            reviewText = `"Sempurna 4 Sehat 5 Sempurna! Ada ${servedNames.join(", ")} lengkap dengan susunya! Penataan karya mbek ni juara!"`;
+          } else if (groupCount >= 3) {
+            stars = 4;
+            expression = "happy";
+            reviewText = `"Enak banget kreasi ${servedNames.join(", ")}! Lengkapi nasi, lauk, sayur, buah, dan susu biar jadi 5 Sempurna!"`;
+          } else {
+            stars = 3;
+            expression = servedIds.includes("sambal") ? "spicy" : "happy";
+            reviewText = `"Makasih hidangan ${servedNames.join(", ")}! Coba padukan berbagai kelompok gizi di 5 sekat ompreng ya!"`;
+          }
+
+          const totalEarned = baseReward + matchBonus + varietyBonus;
+          this.coins += totalEarned;
+
+          breakdownHTML = `
+            <div class="eval-row"><span>Modal Menu Terpakai (${this.platedItems.length} porsi):</span><strong>-${spentCoins} Koin</strong></div>
+            <div class="eval-row"><span>Apresiasi Dasar Pelanggan:</span><strong>+${baseReward} Koin</strong></div>
+            <div class="eval-row"><span>Skor Gizi 4 Sehat 5 Sempurna (${groupCount}/5):</span><strong>+${matchBonus} Koin</strong></div>
+            <div class="eval-row"><span>Bonus Variasi &amp; Kerapian Ompreng:</span><strong>+${varietyBonus} Koin</strong></div>
+            <div class="eval-row total"><span>Total Hadiah Diterima:</span><span>+${totalEarned} Koin 🪙</span></div>
+          `;
+        }
+
+        document.getElementById("studentCharacterBox").innerHTML = renderStudentSVG(this.currentStudent, expression);
+        document.getElementById("studentReviewBubble").textContent = reviewText;
+        document.getElementById("evalBreakdownList").innerHTML = breakdownHTML;
+
+        document.getElementById("diningLayoutWrap").classList.add("with-eval");
+        document.getElementById("evaluationPanel").classList.add("visible");
+        this.updateUI();
+
+        const starEls = document.querySelectorAll("#evalStarsRow .star-icon");
+        starEls.forEach((s) => s.classList.remove("lit"));
+
+        for (let i = 0; i < stars; i++) {
+          setTimeout(() => {
+            starEls[i].classList.add("lit");
+            this.sound.playStar(i);
+          }, 170 * (i + 1));
+        }
+
+        setTimeout(() => {
+          this.sound.playCoin();
+        }, 170 * stars + 180);
+      }
+
+      nextRound() {
+        document.getElementById("diningModal").classList.add("hidden");
+
+        this.platedItems = [];
+        this.selectedUid = null;
+        this.activeOuterFoodId = null;
+        this.isLidClosed = false;
+        this.isServing = false;
+        this.omprengLid.classList.remove("closed");
+
+        this.renderPlatedItems();
+        this.generateNewCustomer();
+        this.updateUI();
+        this.openMenuSelector(true);
+      }
+
+      sleep(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      window.game = new OmprengGame();
+    });
+  </script>
+</body>
+</html>
